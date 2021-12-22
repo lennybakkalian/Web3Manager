@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  w3m_db:
+    image: postgres:14.0
+    container_name: w3m_db
+    volumes:
+      - w3m_db:/var/lib/postgresql/data
+    ports:
+      - '9900:5432'
+    environment:
+      - 'TZ=Europe/Berlin'
+      - 'PGTZ=Europe/Berlin'
+      - 'POSTGRES_USER=w3m'
+      - 'POSTGRES_PASSWORD=w3m'
+      - 'POSTGRES_DB=w3m'
+      - 'POSTGRES_ENCODING=UNICODE'
+      - 'POSTGRES_COLLATE=C'
+      - 'POSTGRES_COLLATE_TYPE=C'
+volumes:
+  w3m_db:
+    external: false

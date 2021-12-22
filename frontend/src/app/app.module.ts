@@ -7,7 +7,7 @@ import {StoreModule} from "@ngrx/store";
 import {walletReducer} from "./store/wallet/wallet.reducer";
 import {MenubarModule} from "primeng/menubar";
 import {FormsModule} from "@angular/forms";
-import {MessageService, SharedModule} from "primeng/api";
+import {ConfirmationService, MessageService, SharedModule} from "primeng/api";
 import {InputTextModule} from "primeng/inputtext";
 import {DropdownModule} from "primeng/dropdown";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
@@ -23,7 +23,11 @@ import {HttpClientModule} from "@angular/common/http";
 import {SelectNodeComponent} from './components/select-node/select-node.component';
 import {MessageModule} from "primeng/message";
 import {ToastModule} from "primeng/toast";
-import { SafeHtmlPipe } from './misc/safe-html.pipe';
+import {SafeHtmlPipe} from './misc/safe-html.pipe';
+import {MiscEffects} from "./store/misc/misc.effects";
+import {ConfirmPopupModule} from "primeng/confirmpopup";
+import {StoreDevtoolsModule} from "@ngrx/store-devtools";
+import {environment} from "../environments/environment";
 
 @NgModule({
   declarations: [
@@ -33,13 +37,22 @@ import { SafeHtmlPipe } from './misc/safe-html.pipe';
     SafeHtmlPipe
   ],
   imports: [
+    StoreModule.forRoot({
+      "wallets": walletReducer
+    }),
+    EffectsModule.forRoot([
+      WalletEffects,
+      MiscEffects
+    ]),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production,
+      autoPause: true
+    }),
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
-    StoreModule.forRoot({
-      "wallets": walletReducer
-    }),
     MenubarModule,
     SharedModule,
     InputTextModule,
@@ -50,12 +63,10 @@ import { SafeHtmlPipe } from './misc/safe-html.pipe';
     RippleModule,
     HttpClientModule,
     MessageModule,
-    EffectsModule.forRoot([
-      WalletEffects
-    ]),
-    ToastModule
+    ToastModule,
+    ConfirmPopupModule
   ],
-  providers: [DialogService, MessageService],
+  providers: [DialogService, MessageService, ConfirmationService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

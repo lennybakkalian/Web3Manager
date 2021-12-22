@@ -11,4 +11,8 @@ export class WalletService {
   }
 
   getAll = () => this.http.get<IWallet[]>(`/api/wallet`)
+
+  addWallet = (wallet: IWallet) => this.http.post<IWallet>(`/api/wallet`, wallet)
+
+  deleteWallet = (wallet: IWallet) => this.http.delete(`/api/wallet/${wallet.id}`)
 }

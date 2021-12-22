@@ -14,7 +14,11 @@ export const initialWalletState: WalletStore = {
 
 export const walletReducer = createReducer(
   initialWalletState,
-  on(actions.selectWalletAction, (state, payload) => ({...state, selected: payload.wallet})),
+  on(actions.selectWalletAction, (state, payload) => ({...state, selected: payload})),
   on(actions.addWalletAction, (state, payload) => ({...state, wallets: [...state.wallets, payload]})),
-  on(actions.setWallets, (state, payload) => ({...state, wallets: payload.wallets}))
+  on(actions.setWalletsAction, (state, payload) => ({
+    ...state,
+    wallets: payload.wallets,
+    ...((payload.wallets.find(w => w.id == state.selected?.id)) ? {} : {selected: null})
+  }))
 )

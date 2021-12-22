@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {MenuItem, MessageService} from "primeng/api";
+import {MenuItem} from "primeng/api";
 import {Store} from "@ngrx/store";
 import {WalletStore} from "./store/wallet/wallet.reducer";
-import {selector_wallets} from "./store/wallet/wallet.selectors";
+import {selector_selectedWallet, selector_wallets} from "./store/wallet/wallet.selectors";
 import {Observable} from "rxjs";
 import {IWallet} from "@shared";
 import {DialogService} from "primeng/dynamicdialog";
-import {addWalletAction, selectWalletAction} from "./store/wallet/wallet.actions";
+import {saveWalletAction, selectWalletAction} from "./store/wallet/wallet.actions";
 import {web3, Web3Service} from "./services/web3.service";
 import {SelectNodeComponent} from "./components/select-node/select-node.component";
 import {WalletManagerDialogComponent} from "./components/wallet-manager-dialog/wallet-manager-dialog.component";
@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
       label: 'Wallets',
       command: () => this.dialogService.open(WalletManagerDialogComponent, {
         header: 'Wallet manager',
-        width: '80%'
+        width: '1000px'
       })
     },
     {
@@ -45,17 +45,16 @@ export class AppComponent implements OnInit {
   ];
 
   $wallets: Observable<IWallet[]>
+  $selectedWallet: Observable<IWallet | null>
 
-  selectedWallet: IWallet;
-
-  constructor(private walletStore: Store<WalletStore>,
+  constructor(public walletStore: Store<WalletStore>,
               private dialogService: DialogService,
-              public web3Service: Web3Service,
-              private messageService: MessageService) {
+              public web3Service: Web3Service) {
   }
 
   ngOnInit() {
     this.$wallets = this.walletStore.select(selector_wallets)
+    this.$selectedWallet = this.walletStore.select(selector_selectedWallet)
 
     // load node endpoint
     this.nodeEndpoint = localStorage.getItem('w3m.node')
@@ -65,15 +64,7 @@ export class AppComponent implements OnInit {
         closable: false
       })
     }
-
-    /* this.dialogService.open(WalletManagerDialogComponent, {
-       header: 'Wallet manager',
-       width: '80%'
-     })*/
   }
-
-
-  updateSelectedWallet = () => this.walletStore.dispatch(selectWalletAction({wallet: this.selectedWallet}))
 
   generateWallet() {
     const generatedAccount = web3.eth.accounts.create()
@@ -82,15 +73,8 @@ export class AppComponent implements OnInit {
       address: generatedAccount.address,
       privateKey: generatedAccount.privateKey
     }
-    this.walletStore.dispatch(addWalletAction(wallet))
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Wallet created',
-      data: {
-        safeHtml: `<span style="font-size:13px">${wallet.address}</span>`
-      },
-      closable: true,
-      life: 1000 * 6
-    });
+    this.walletStore.dispatch(saveWalletAction(wallet))
   }
+
+  selectWallet = (wallet: IWallet) => this.walletStore.dispatch(selectWalletAction(wallet))
 }

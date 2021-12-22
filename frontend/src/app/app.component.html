@@ -1,12 +1,13 @@
 <p-toast position="bottom-center">
   <ng-template pTemplate="message" let-message>
-    <div style="display:flex;flex-direction:column">
+    <div style="display:flex;flex-direction:column;width:100%">
       <b>{{message.summary}}</b>
       <div *ngIf="message?.data?.safeHtml" [innerHTML]="message?.data?.safeHtml | safeHtml"></div>
       <ng-container *ngIf="!message?.data?.safeHtml">{{message.detail}}</ng-container>
     </div>
   </ng-template>
 </p-toast>
+<p-confirmPopup></p-confirmPopup>
 <ng-container *ngIf="nodeEndpoint">
   <p-menubar [model]="items">
 
@@ -14,8 +15,8 @@
     <ng-template pTemplate="end">
 
       <p-dropdown [options]="$any($wallets | async)"
-                  [(ngModel)]="selectedWallet"
-                  (ngModelChange)="updateSelectedWallet()"
+                  [ngModel]="$selectedWallet"
+                  (ngModelChange)="selectWallet($event)"
                   [filter]="true"
                   [showClear]="true"
                   optionLabel="name"
@@ -26,8 +27,8 @@
                     (click)="generateWallet()"></p-button>
         </ng-template>
         <ng-template pTemplate="selectedItem">
-          <div *ngIf="selectedWallet">
-            {{selectedWallet.address}} ({{selectedWallet.name}})
+          <div *ngIf="$selectedWallet | async">
+            {{($selectedWallet | async)?.address}} ({{($selectedWallet | async)?.name}})
           </div>
         </ng-template>
         <ng-template let-wallet pTemplate="item">

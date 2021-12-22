@@ -27,7 +27,12 @@
       <td>{{wallet.address}}</td>
       <td>{{wallet.balance}}</td>
       <td>
-        <a href="https://bscscan.com/address/{{wallet.address}}" target="_blank"><img src="/assets/img/bscscan.png" style="max-height:20px" alt="BscScan"/></a>
+        <div style="display:flex;gap:10px;align-items:center">
+          <a href="https://bscscan.com/address/{{wallet.address}}" target="_blank"><img src="/assets/img/bscscan.png"
+                                                                                        style="max-height:20px"
+                                                                                        alt="BscScan"/></a>
+          <i class="pi pi-trash" style="color:red" (click)="deleteWallet(wallet, $event)"></i>
+        </div>
       </td>
     </tr>
   </ng-template>

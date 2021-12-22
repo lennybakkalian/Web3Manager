@@ -7,6 +7,8 @@ import {Observable} from "rxjs";
 import {selector_wallets} from "../../store/wallet/wallet.selectors";
 
 import * as walletActions from '../../store/wallet/wallet.actions'
+import {deleteWalletAction} from '../../store/wallet/wallet.actions'
+import {ConfirmationService} from "primeng/api";
 
 @Component({
   selector: 'app-wallet-manager-dialog',
@@ -24,7 +26,8 @@ export class WalletManagerDialogComponent implements OnInit {
   }
 
   constructor(private walletStore: Store<WalletStore>,
-              private dialogRef: DynamicDialogRef) {
+              private dialogRef: DynamicDialogRef,
+              private confirmationService: ConfirmationService) {
   }
 
   ngOnInit() {
@@ -32,7 +35,18 @@ export class WalletManagerDialogComponent implements OnInit {
   }
 
   createWallet() {
-    this.walletStore.dispatch(walletActions.addWalletAction(this.createWalletModel))
+    this.walletStore.dispatch(walletActions.saveWalletAction(this.createWalletModel))
     this.createWalletModel = {name: '', address: '', privateKey: ''}
+  }
+
+  deleteWallet(wallet: IWallet, $event: MouseEvent) {
+    this.confirmationService.confirm({
+      target: $event.target!!,
+      message: `Do you really want to delete the wallet "${wallet.name}"?`,
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.walletStore.dispatch(deleteWalletAction(wallet))
+      }
+    });
   }
 }
