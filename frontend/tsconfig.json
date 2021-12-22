@@ -26,7 +26,8 @@
       "@shared": [
         "../shared"
       ]
-    }
+    },
+    "strictPropertyInitialization": false
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

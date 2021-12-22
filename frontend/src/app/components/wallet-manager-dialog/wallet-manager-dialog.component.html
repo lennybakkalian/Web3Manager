@@ -1,0 +1,43 @@
+<div style="display:flex;gap:10px;padding:5px 0">
+  <input pInputText placeholder="Name" [(ngModel)]="createWalletModel.name"/>
+  <input pInputText placeholder="Address" [(ngModel)]="createWalletModel.address"/>
+  <input pInputText placeholder="Private key" [(ngModel)]="createWalletModel.privateKey"/>
+  <button pButton class="p-button-help" (click)="createWallet()">Create Wallet</button>
+</div>
+<p-table [value]="$any(walletsSelector | async)" styleClass="p-datatable-sm">
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="name">
+        <div class="p-d-flex p-jc-between p-ai-center">Name
+          <p-sortIcon field="name"></p-sortIcon>
+          <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto"></p-columnFilter>
+        </div>
+      </th>
+      <th pSortableColumn="address">
+        <div class="p-d-flex p-jc-between p-ai-center">Address
+          <p-sortIcon field="address"></p-sortIcon>
+          <p-columnFilter type="text" field="address" display="menu" class="p-ml-auto"></p-columnFilter>
+        </div>
+      </th>
+      <th pSortableColumn="balance">
+        <div class="p-d-flex p-jc-between p-ai-center">Balance
+          <p-sortIcon field="balance"></p-sortIcon>
+          <p-columnFilter type="text" field="balance" display="menu" class="p-ml-auto"></p-columnFilter>
+        </div>
+      </th>
+      <th>
+        <div class="p-d-flex p-jc-between p-ai-center">Actions</div>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-wallet>
+    <tr class="p-selectable-row">
+      <td>{{wallet.name}}</td>
+      <td>{{wallet.address}}</td>
+      <td>{{wallet.balance}}</td>
+      <td>
+        <a href="https://bscscan.com/address/{{wallet.address}}" target="_blank"><img src="/assets/img/bscscan.png" style="max-height:20px" alt="BscScan"/></a>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

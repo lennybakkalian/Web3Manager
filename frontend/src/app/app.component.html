@@ -1,0 +1,24 @@
+{{(walletsSelector | async) | json}}
+<p-menubar [model]="items">
+
+
+<!--
+  <ng-template pTemplate="end">
+    <p-dropdown [options]="(walletsSelector | async)"
+                [(ngModel)]="selectedWallet"
+                [filter]="true"
+                [showClear]="true"
+                optionLabel="name"
+                filterBy="name"
+                placeholder="Select a Country">
+      <ng-template pTemplate="selectedItem">
+        <div *ngIf="selectedWallet">
+          {{selectedWallet.address}}
+        </div>
+      </ng-template>
+      <ng-template let-wallets pTemplate="item">
+        {{selectedWallet.name}}
+      </ng-template>
+    </p-dropdown>
+  </ng-template>-->
+</p-menubar>
