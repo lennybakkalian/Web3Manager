@@ -36,7 +36,10 @@
           </div>
         </ng-template>
         <ng-template let-wallet pTemplate="item">
-          {{wallet.name}}
+          <div style="display:flex;justify-content:space-between">
+            <span>{{wallet.name}}</span>
+            <b>{{$any(wallet?.balance | async)?.euro | number: '.2'}}€</b>
+          </div>
         </ng-template>
       </p-dropdown>
     </ng-template>

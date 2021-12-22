@@ -25,12 +25,12 @@
     <tr class="p-selectable-row">
       <td>{{wallet.name}}</td>
       <td>{{wallet.address}}</td>
-      <td>{{wallet.balance}}</td>
+      <td style="text-align:right">{{$any(wallet?.balance | async)?.euro | number: '.2'}}€</td>
       <td>
         <div style="display:flex;gap:10px;align-items:center">
-          <a href="https://bscscan.com/address/{{wallet.address}}" target="_blank"><img src="/assets/img/bscscan.png"
-                                                                                        style="max-height:20px"
-                                                                                        alt="BscScan"/></a>
+          <a href="https://bscscan.com/address/{{wallet.address}}" target="_blank">
+            <img src="/assets/img/bscscan.png" style="max-height:20px" alt="BscScan"/>
+          </a>
           <i class="pi pi-trash" style="color:red" (click)="deleteWallet(wallet, $event)"></i>
           <i class="pi pi-copy" (click)="copyPrivateKey(wallet)" pTooltip="Copy private key"></i>
         </div>

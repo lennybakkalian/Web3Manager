@@ -73,7 +73,7 @@ export class AppComponent implements OnInit {
   generateWallet() {
     const generatedAccount = web3.eth.accounts.create()
     const wallet: IWallet = {
-      name: `Generated ${generatedAccount.address.slice(0, 6)}`,
+      name: `Generated ${generatedAccount.address.slice(2, 6)}`,
       address: generatedAccount.address,
       privateKey: generatedAccount.privateKey
     }
