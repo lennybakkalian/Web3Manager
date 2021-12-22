@@ -1,0 +1,12 @@
+{
+  "name": "shared",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "Lenny Bakkalian",
+  "license": "ISC",
+  "dependencies": {
+    "rxjs": "^7.4.0"
+  }
+}

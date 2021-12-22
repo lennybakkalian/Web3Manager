@@ -13,7 +13,6 @@
 
 
     <ng-template pTemplate="end">
-
       <p-dropdown [options]="$any($wallets | async)"
                   [ngModel]="$selectedWallet"
                   (ngModelChange)="selectWallet($event)"
@@ -21,14 +20,19 @@
                   [showClear]="true"
                   optionLabel="name"
                   filterBy="name"
-                  placeholder="Select a Wallet">
+                  placeholder="Select a Wallet"
+                  appendTo="body">
         <ng-template pTemplate="footer">
           <p-button styleClass="p-button-outlined" icon="pi pi-plus-circle" label="Generate Wallet"
                     (click)="generateWallet()"></p-button>
         </ng-template>
         <ng-template pTemplate="selectedItem">
-          <div *ngIf="$selectedWallet | async">
-            {{($selectedWallet | async)?.address}} ({{($selectedWallet | async)?.name}})
+          <div *ngIf="$selectedWallet | async" style="display:flex;flex-direction:column">
+            <div style="display:flex;justify-content:space-between">
+              <span>{{($selectedWallet | async)?.name}}</span>
+              <b>{{(($selectedWallet | async)?.balance | async)?.euro | number: '.2'}}€</b>
+            </div>
+            <span style="color:grey;font-size:11px">{{($selectedWallet | async)?.address}}</span>
           </div>
         </ng-template>
         <ng-template let-wallet pTemplate="item">

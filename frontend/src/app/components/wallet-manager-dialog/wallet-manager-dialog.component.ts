@@ -49,4 +49,8 @@ export class WalletManagerDialogComponent implements OnInit {
       }
     });
   }
+
+  async copyPrivateKey(wallet: IWallet) {
+    await navigator.clipboard.writeText(wallet.privateKey)
+  }
 }

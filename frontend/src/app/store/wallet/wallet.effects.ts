@@ -8,11 +8,13 @@ import {
   setWalletsAction,
   WalletActions
 } from "./wallet.actions";
-import {catchError, EMPTY, exhaustMap, map, mergeMap, of, switchMap} from "rxjs";
+import {catchError, EMPTY, exhaustMap, from, map, mergeMap, of, switchMap, timer} from "rxjs";
 import {Actions, createEffect, ofType, ROOT_EFFECTS_INIT} from "@ngrx/effects";
 import {WalletStore} from "./wallet.reducer";
 import {Store} from "@ngrx/store";
 import {showToast} from "../misc/misc.actions";
+import {web3} from "../../services/web3.service";
+import {bnbPrice} from "../misc/misc.effects";
 
 
 @Injectable()
@@ -26,7 +28,18 @@ export class WalletEffects {
   loadWallets$ = createEffect(() => this.actions$.pipe(
       ofType(WalletActions.LOAD_WALLETS, ROOT_EFFECTS_INIT),
       mergeMap(() => this.walletService.getAll().pipe(
-        map(wallets => setWalletsAction({wallets: wallets})),
+        map(wallets =>
+          setWalletsAction({
+            wallets: wallets.map(wallet => ({
+              ...wallet,
+              balance: timer(0, 1000).pipe( // refresh balance every second when subscribed
+                switchMap(_ => from(web3.eth.getBalance(wallet.address)).pipe(
+                  map(units => ({balance: units, euro: Number(units) / 10e17 * bnbPrice}))
+                ))
+              )
+            }))
+          })
+        ),
         catchError(() => EMPTY)
       ))
     )

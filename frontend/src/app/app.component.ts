@@ -10,6 +10,7 @@ import {saveWalletAction, selectWalletAction} from "./store/wallet/wallet.action
 import {web3, Web3Service} from "./services/web3.service";
 import {SelectNodeComponent} from "./components/select-node/select-node.component";
 import {WalletManagerDialogComponent} from "./components/wallet-manager-dialog/wallet-manager-dialog.component";
+import Web3 from "web3";
 
 @Component({
   selector: 'app-root',
@@ -63,7 +64,10 @@ export class AppComponent implements OnInit {
         header: 'Select your node',
         closable: false
       })
+      return
     }
+
+    this.initWeb3()
   }
 
   generateWallet() {
@@ -77,4 +81,20 @@ export class AppComponent implements OnInit {
   }
 
   selectWallet = (wallet: IWallet) => this.walletStore.dispatch(selectWalletAction(wallet))
+
+  initWeb3() {
+    web3.setProvider(new Web3.providers.WebsocketProvider(this.nodeEndpoint!!, {
+      clientConfig: {
+        maxReceivedFrameSize: 100000000,
+        maxReceivedMessageSize: 100000000,
+        keepalive: true,
+        keepaliveInterval: 60000
+      },
+      reconnect: {
+        auto: true,
+        delay: 5000,
+        onTimeout: true
+      }
+    }))
+  }
 }
