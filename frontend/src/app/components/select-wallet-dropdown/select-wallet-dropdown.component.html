@@ -12,7 +12,7 @@
     <div *ngIf="selected" style="display:flex;flex-direction:column">
       <div style="display:flex;justify-content:space-between">
         <span>{{selected.name}}</span>
-        <b>{{(selected.balance | async)?.euro | number: '.2'}}€</b>
+        <b>{{(selected.balance | async)?.euro | number: '1.2-2'}}€</b>
       </div>
       <span style="color:grey;font-size:11px">{{selected.address}}</span>
     </div>
@@ -20,7 +20,7 @@
   <ng-template let-wallet pTemplate="item">
     <div style="display:flex;justify-content:space-between">
       <span>{{wallet.name}}</span>
-      <b>{{$any(wallet?.balance | async)?.euro | number: '.2'}}€</b>
+      <b>{{$any(wallet?.balance | async)?.euro | number: '1.2-2'}}€</b>
     </div>
   </ng-template>
 </p-dropdown>

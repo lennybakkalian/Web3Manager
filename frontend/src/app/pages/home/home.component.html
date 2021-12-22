@@ -1,17 +1,5 @@
 <div class="wrapper">
 
-  <p-card header="Transfer">
-    <div style="display: flex; flex-direction: column; align-items: center; gap: 5px">
-      <app-select-wallet-dropdown [selected]="$selectedWallet | async" (selectedChanged)="fromSelected($event)"
-                                  [ignoreWallets]="transfer_to ? [transfer_to] : []"></app-select-wallet-dropdown>
-      <i class="pi pi-arrow-down"></i>
-      <app-select-wallet-dropdown (selectedChanged)="toSelected($event)"
-                                  [ignoreWallets]="transfer_from ? [transfer_from] : []"></app-select-wallet-dropdown>
-      <div class="p-inputgroup" style="margin-top:40px">
-        <p-inputNumber [(ngModel)]="transfer_value" mode="currency" locale="de-DE" currency="EUR" [minFractionDigits]="2" placeholder="Amount in €"></p-inputNumber>
-        <button type="button" pButton pRipple icon="pi pi-send" class="p-button-warn" label="Transfer"></button>
-      </div>
-    </div>
-  </p-card>
+  <app-transfer-tile></app-transfer-tile>
 
 </div>

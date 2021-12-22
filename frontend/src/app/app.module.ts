@@ -32,6 +32,7 @@ import { HomeComponent } from './pages/home/home.component';
 import {CardModule} from "primeng/card";
 import { SelectWalletDropdownComponent } from './components/select-wallet-dropdown/select-wallet-dropdown.component';
 import {InputNumberModule} from "primeng/inputnumber";
+import { TransferTileComponent } from './pages/home/transfer-tile/transfer-tile.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import {InputNumberModule} from "primeng/inputnumber";
     SelectNodeComponent,
     SafeHtmlPipe,
     HomeComponent,
-    SelectWalletDropdownComponent
+    SelectWalletDropdownComponent,
+    TransferTileComponent
   ],
   imports: [
     StoreModule.forRoot({

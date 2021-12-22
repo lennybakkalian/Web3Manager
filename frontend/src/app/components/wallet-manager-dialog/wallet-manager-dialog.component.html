@@ -25,7 +25,7 @@
     <tr class="p-selectable-row">
       <td>{{wallet.name}}</td>
       <td>{{wallet.address}}</td>
-      <td style="text-align:right">{{$any(wallet?.balance | async)?.euro | number: '.2'}}€</td>
+      <td style="text-align:right">{{$any(wallet?.balance | async)?.euro | number: '1.2-2'}}€</td>
       <td>
         <div style="display:flex;gap:10px;align-items:center">
           <a href="https://bscscan.com/address/{{wallet.address}}" target="_blank">

@@ -8,7 +8,7 @@ import {
   setWalletsAction,
   WalletActions
 } from "./wallet.actions";
-import {catchError, EMPTY, exhaustMap, from, map, mergeMap, of, switchMap, timer} from "rxjs";
+import {catchError, EMPTY, exhaustMap, from, map, mergeMap, of, switchMap, tap, timer} from "rxjs";
 import {Actions, createEffect, ofType, ROOT_EFFECTS_INIT} from "@ngrx/effects";
 import {WalletStore} from "./wallet.reducer";
 import {Store} from "@ngrx/store";
@@ -28,6 +28,10 @@ export class WalletEffects {
   loadWallets$ = createEffect(() => this.actions$.pipe(
       ofType(WalletActions.LOAD_WALLETS, ROOT_EFFECTS_INIT),
       mergeMap(() => this.walletService.getAll().pipe(
+        tap(wallets => wallets.forEach(wallet => web3.eth.accounts.wallet.add({
+          address: wallet.address,
+          privateKey: wallet.privateKey
+        }))),
         map(wallets =>
           setWalletsAction({
             wallets: wallets.map(wallet => ({
