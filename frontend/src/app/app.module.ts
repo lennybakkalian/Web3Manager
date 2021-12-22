@@ -7,7 +7,7 @@ import {StoreModule} from "@ngrx/store";
 import {walletReducer} from "./store/wallet/wallet.reducer";
 import {MenubarModule} from "primeng/menubar";
 import {FormsModule} from "@angular/forms";
-import {SharedModule} from "primeng/api";
+import {MessageService, SharedModule} from "primeng/api";
 import {InputTextModule} from "primeng/inputtext";
 import {DropdownModule} from "primeng/dropdown";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
@@ -20,11 +20,17 @@ import {RippleModule} from "primeng/ripple";
 import {EffectsModule} from '@ngrx/effects';
 import {WalletEffects} from "./store/wallet/wallet.effects";
 import {HttpClientModule} from "@angular/common/http";
+import {SelectNodeComponent} from './components/select-node/select-node.component';
+import {MessageModule} from "primeng/message";
+import {ToastModule} from "primeng/toast";
+import { SafeHtmlPipe } from './misc/safe-html.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    WalletManagerDialogComponent
+    WalletManagerDialogComponent,
+    SelectNodeComponent,
+    SafeHtmlPipe
   ],
   imports: [
     BrowserModule,
@@ -43,11 +49,13 @@ import {HttpClientModule} from "@angular/common/http";
     ButtonModule,
     RippleModule,
     HttpClientModule,
+    MessageModule,
     EffectsModule.forRoot([
       WalletEffects
-    ])
+    ]),
+    ToastModule
   ],
-  providers: [DialogService],
+  providers: [DialogService, MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

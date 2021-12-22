@@ -1,24 +1,39 @@
-<p-menubar [model]="items">
-
-
-  <ng-template pTemplate="end">
-
-    <p-dropdown [options]="$any($wallets | async)"
-                [(ngModel)]="selectedWallet"
-                (ngModelChange)="updateSelectedWallet()"
-                [filter]="true"
-                [showClear]="true"
-                optionLabel="name"
-                filterBy="name"
-                placeholder="Select a Country">
-      <ng-template pTemplate="selectedItem">
-        <div *ngIf="selectedWallet">
-          {{selectedWallet.address}} ({{selectedWallet.name}})
-        </div>
-      </ng-template>
-      <ng-template let-wallet pTemplate="item">
-        {{wallet.name}}
-      </ng-template>
-    </p-dropdown>
+<p-toast position="bottom-center">
+  <ng-template pTemplate="message" let-message>
+    <div style="display:flex;flex-direction:column">
+      <b>{{message.summary}}</b>
+      <div *ngIf="message?.data?.safeHtml" [innerHTML]="message?.data?.safeHtml | safeHtml"></div>
+      <ng-container *ngIf="!message?.data?.safeHtml">{{message.detail}}</ng-container>
+    </div>
   </ng-template>
-</p-menubar>
+</p-toast>
+<ng-container *ngIf="nodeEndpoint">
+  <p-menubar [model]="items">
+
+
+    <ng-template pTemplate="end">
+
+      <p-dropdown [options]="$any($wallets | async)"
+                  [(ngModel)]="selectedWallet"
+                  (ngModelChange)="updateSelectedWallet()"
+                  [filter]="true"
+                  [showClear]="true"
+                  optionLabel="name"
+                  filterBy="name"
+                  placeholder="Select a Wallet">
+        <ng-template pTemplate="footer">
+          <p-button styleClass="p-button-outlined" icon="pi pi-plus-circle" label="Generate Wallet"
+                    (click)="generateWallet()"></p-button>
+        </ng-template>
+        <ng-template pTemplate="selectedItem">
+          <div *ngIf="selectedWallet">
+            {{selectedWallet.address}} ({{selectedWallet.name}})
+          </div>
+        </ng-template>
+        <ng-template let-wallet pTemplate="item">
+          {{wallet.name}}
+        </ng-template>
+      </p-dropdown>
+    </ng-template>
+  </p-menubar>
+</ng-container>
