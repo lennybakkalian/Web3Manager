@@ -80,7 +80,7 @@ export class AppComponent implements OnInit {
     this.walletStore.dispatch(saveWalletAction(wallet))
   }
 
-  selectWallet = (wallet: IWallet) => this.walletStore.dispatch(selectWalletAction(wallet))
+  selectWallet = (wallet: IWallet) => this.walletStore.dispatch(selectWalletAction({wallet: wallet}))
 
   initWeb3() {
     web3.setProvider(new Web3.providers.WebsocketProvider(this.nodeEndpoint!!, {

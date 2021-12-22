@@ -1,6 +1,11 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
 
 body {
   background: black;
   color: white;
+  font-family: 'Roboto', sans-serif;
+}
+
+.p-menubar{
+  padding: 0 !important;
 }

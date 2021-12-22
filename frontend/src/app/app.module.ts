@@ -28,13 +28,19 @@ import {MiscEffects} from "./store/misc/misc.effects";
 import {ConfirmPopupModule} from "primeng/confirmpopup";
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {environment} from "../environments/environment";
+import { HomeComponent } from './pages/home/home.component';
+import {CardModule} from "primeng/card";
+import { SelectWalletDropdownComponent } from './components/select-wallet-dropdown/select-wallet-dropdown.component';
+import {InputNumberModule} from "primeng/inputnumber";
 
 @NgModule({
   declarations: [
     AppComponent,
     WalletManagerDialogComponent,
     SelectNodeComponent,
-    SafeHtmlPipe
+    SafeHtmlPipe,
+    HomeComponent,
+    SelectWalletDropdownComponent
   ],
   imports: [
     StoreModule.forRoot({
@@ -64,7 +70,9 @@ import {environment} from "../environments/environment";
     HttpClientModule,
     MessageModule,
     ToastModule,
-    ConfirmPopupModule
+    ConfirmPopupModule,
+    CardModule,
+    InputNumberModule
   ],
   providers: [DialogService, MessageService, ConfirmationService],
   bootstrap: [AppComponent]

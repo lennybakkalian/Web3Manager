@@ -1,0 +1,26 @@
+<p-dropdown [options]="$any($wallets | async)"
+            [ngModel]="selected"
+            (ngModelChange)="selectWallet($event)"
+            [filter]="true"
+            [showClear]="true"
+            optionLabel="name"
+            filterBy="name"
+            placeholder="Select a Wallet"
+            appendTo="body"
+            [ngStyle]="{width: '180px'}">
+  <ng-template pTemplate="selectedItem">
+    <div *ngIf="selected" style="display:flex;flex-direction:column">
+      <div style="display:flex;justify-content:space-between">
+        <span>{{selected.name}}</span>
+        <b>{{(selected.balance | async)?.euro | number: '.2'}}€</b>
+      </div>
+      <span style="color:grey;font-size:11px">{{selected.address}}</span>
+    </div>
+  </ng-template>
+  <ng-template let-wallet pTemplate="item">
+    <div style="display:flex;justify-content:space-between">
+      <span>{{wallet.name}}</span>
+      <b>{{$any(wallet?.balance | async)?.euro | number: '.2'}}€</b>
+    </div>
+  </ng-template>
+</p-dropdown>

@@ -13,7 +13,7 @@ export enum WalletActions {
 
 export const saveWalletAction = createAction(WalletActions.SAVE_WALLET, props<{ name: string, address: string, privateKey: string }>())
 export const deleteWalletAction = createAction(WalletActions.DELETE_WALLET, props<IWallet>())
-export const selectWalletAction = createAction(WalletActions.SELECT_WALLET, props<IWallet>())
+export const selectWalletAction = createAction(WalletActions.SELECT_WALLET, props<{ wallet: IWallet }>())
 export const loadWalletsAction = createAction(WalletActions.LOAD_WALLETS)
 
 export const setWalletsAction = createAction(WalletActions.SET_WALLETS, props<{ wallets: IWallet[] }>())
