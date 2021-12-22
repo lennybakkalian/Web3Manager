@@ -4,26 +4,17 @@
   <input pInputText placeholder="Private key" [(ngModel)]="createWalletModel.privateKey"/>
   <button pButton class="p-button-help" (click)="createWallet()">Create Wallet</button>
 </div>
-<p-table [value]="$any(walletsSelector | async)" styleClass="p-datatable-sm">
+<p-table [value]="$any($wallets | async)" styleClass="p-datatable-sm">
   <ng-template pTemplate="header">
     <tr>
       <th pSortableColumn="name">
-        <div class="p-d-flex p-jc-between p-ai-center">Name
-          <p-sortIcon field="name"></p-sortIcon>
-          <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto"></p-columnFilter>
-        </div>
+        <div class="p-d-flex p-jc-between p-ai-center">Name</div>
       </th>
       <th pSortableColumn="address">
-        <div class="p-d-flex p-jc-between p-ai-center">Address
-          <p-sortIcon field="address"></p-sortIcon>
-          <p-columnFilter type="text" field="address" display="menu" class="p-ml-auto"></p-columnFilter>
-        </div>
+        <div class="p-d-flex p-jc-between p-ai-center">Address</div>
       </th>
       <th pSortableColumn="balance">
-        <div class="p-d-flex p-jc-between p-ai-center">Balance
-          <p-sortIcon field="balance"></p-sortIcon>
-          <p-columnFilter type="text" field="balance" display="menu" class="p-ml-auto"></p-columnFilter>
-        </div>
+        <div class="p-d-flex p-jc-between p-ai-center">Balance</div>
       </th>
       <th>
         <div class="p-d-flex p-jc-between p-ai-center">Actions</div>

@@ -2,11 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {MenuItem} from "primeng/api";
 import {Store} from "@ngrx/store";
 import {WalletStore} from "./store/wallet/wallet.reducer";
-import {selectWallets} from "./store/wallet/wallet.selectors";
+import {selector_wallets} from "./store/wallet/wallet.selectors";
 import {Observable} from "rxjs";
 import {IWallet} from "@shared";
 import {DialogService} from "primeng/dynamicdialog";
 import {WalletManagerDialogComponent} from "./components/wallet-manager-dialog/wallet-manager-dialog.component";
+import {selectWalletAction} from "./store/wallet/wallet.actions";
+import {Web3Service} from "./services/web3.service";
 
 @Component({
   selector: 'app-root',
@@ -22,15 +24,17 @@ export class AppComponent implements OnInit {
     }
   ];
 
-  walletsSelector: Observable<IWallet[]>
+  $wallets: Observable<IWallet[]>
+
   selectedWallet: IWallet;
 
   constructor(private store: Store<WalletStore>,
-              private dialogService: DialogService) {
+              private dialogService: DialogService,
+              public web3Service: Web3Service) {
   }
 
   ngOnInit() {
-    this.walletsSelector = this.store.select(selectWallets)
+    this.$wallets = this.store.select(selector_wallets)
 
 
     this.dialogService.open(WalletManagerDialogComponent, {
@@ -40,4 +44,5 @@ export class AppComponent implements OnInit {
   }
 
 
+  updateSelectedWallet = () => this.store.dispatch(selectWalletAction({wallet: this.selectedWallet}))
 }

@@ -4,7 +4,9 @@ import {WalletStore} from "../../store/wallet/wallet.reducer";
 import {Store} from "@ngrx/store";
 import {IWallet} from "@shared";
 import {Observable} from "rxjs";
-import {selectWallets} from "../../store/wallet/wallet.selectors";
+import {selector_wallets} from "../../store/wallet/wallet.selectors";
+
+import * as walletActions from '../../store/wallet/wallet.actions'
 
 @Component({
   selector: 'app-wallet-manager-dialog',
@@ -13,7 +15,7 @@ import {selectWallets} from "../../store/wallet/wallet.selectors";
 })
 export class WalletManagerDialogComponent implements OnInit {
 
-  walletsSelector: Observable<IWallet[]>
+  $wallets: Observable<IWallet[]>
 
   createWalletModel: IWallet = {
     name: '',
@@ -26,10 +28,11 @@ export class WalletManagerDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.walletsSelector = this.walletStore.select(selectWallets)
+    this.$wallets = this.walletStore.select(selector_wallets)
   }
 
   createWallet() {
-
+    this.walletStore.dispatch(walletActions.addWalletAction(this.createWalletModel))
+    this.createWalletModel = {name: '', address: '', privateKey: ''}
   }
 }

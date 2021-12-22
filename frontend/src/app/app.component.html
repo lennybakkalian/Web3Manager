@@ -1,11 +1,11 @@
-{{(walletsSelector | async) | json}}
 <p-menubar [model]="items">
 
 
-<!--
   <ng-template pTemplate="end">
-    <p-dropdown [options]="(walletsSelector | async)"
+
+    <p-dropdown [options]="$any($wallets | async)"
                 [(ngModel)]="selectedWallet"
+                (ngModelChange)="updateSelectedWallet()"
                 [filter]="true"
                 [showClear]="true"
                 optionLabel="name"
@@ -13,12 +13,12 @@
                 placeholder="Select a Country">
       <ng-template pTemplate="selectedItem">
         <div *ngIf="selectedWallet">
-          {{selectedWallet.address}}
+          {{selectedWallet.address}} ({{selectedWallet.name}})
         </div>
       </ng-template>
-      <ng-template let-wallets pTemplate="item">
-        {{selectedWallet.name}}
+      <ng-template let-wallet pTemplate="item">
+        {{wallet.name}}
       </ng-template>
     </p-dropdown>
-  </ng-template>-->
+  </ng-template>
 </p-menubar>
