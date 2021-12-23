@@ -1,0 +1,56 @@
+<p-toast position="bottom-center">
+  <ng-template pTemplate="message" let-message>
+    <div style="display:flex;flex-direction:column;width:100%">
+      <b>{{message.summary}}</b>
+      <div *ngIf="message?.data?.safeHtml" [innerHTML]="message?.data?.safeHtml | safeHtml"></div>
+      <ng-container *ngIf="!message?.data?.safeHtml">{{message.detail}}</ng-container>
+    </div>
+  </ng-template>
+</p-toast>
+<p-confirmPopup></p-confirmPopup>
+<ng-container *ngIf="nodeEndpoint">
+  <p-menubar [model]="items">
+
+
+    <ng-template pTemplate="end">
+      <p-dropdown [options]="$any($wallets | async)"
+                  [ngModel]="$selectedWallet"
+                  (ngModelChange)="selectWallet($event)"
+                  [filter]="true"
+                  [showClear]="true"
+                  optionLabel="name"
+                  filterBy="name"
+                  placeholder="Select a Wallet"
+                  appendTo="body">
+        <ng-template pTemplate="footer">
+          <p-button styleClass="p-button-outlined" icon="pi pi-plus-circle" label="Generate Wallet"
+                    (click)="generateWallet()"></p-button>
+        </ng-template>
+        <ng-template pTemplate="selectedItem">
+          <div *ngIf="$selectedWallet | async" style="display:flex;flex-direction:column">
+            <div style="display:flex;justify-content:space-between">
+              <span>{{($selectedWallet | async)?.name}}</span>
+              <b>{{(($selectedWallet | async)?.balance | async)?.euro | number: '1.2-2'}}€</b>
+            </div>
+            <span style="color:grey;font-size:11px">{{($selectedWallet | async)?.address}}</span>
+          </div>
+        </ng-template>
+        <ng-template let-wallet pTemplate="item">
+          <div style="display:flex;flex-direction:column">
+            <div style="display:flex;justify-content:space-between">
+              <span>{{wallet.name}}</span>
+              <b>{{($any(wallet.balance | async))?.euro | number: '1.2-2'}}€</b>
+            </div>
+            <span style="color:grey;font-size:11px">{{wallet.address}}</span>
+          </div>
+          <!--<div style="display:flex;justify-content:space-between">
+            <span>{{wallet.name}}</span>
+            <b>{{$any(wallet?.balance | async)?.euro | number: '1.2-2'}}€</b>
+          </div>-->
+        </ng-template>
+      </p-dropdown>
+    </ng-template>
+  </p-menubar>
+
+  <router-outlet></router-outlet>
+</ng-container>

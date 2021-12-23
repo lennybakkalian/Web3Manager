@@ -6,7 +6,7 @@
     <app-select-wallet-dropdown (selectedChanged)="toSelected($event)"
                                 [ignoreWallets]="transfer_from ? [transfer_from] : []"></app-select-wallet-dropdown>
     <div class="p-inputgroup" style="margin-top:40px">
-      <p-inputNumber [(ngModel)]="transfer_value" mode="currency" locale="de-DE" currency="EUR" [minFractionDigits]="2" placeholder="Amount in €"></p-inputNumber>
+      <p-inputNumber [(ngModel)]="transfer_value" mode="currency" locale="de-DE" currency="EUR" [minFractionDigits]="2" placeholder="Amount in €" (onInput)="transferValueChanged($event)"></p-inputNumber>
       <button type="button" pButton pRipple icon="pi pi-send" class="p-button-warn" label="Transfer" [disabled]="!transfer_from || !transfer_to || transfer_value == 0" (click)="executeTransfer()" [loading]="transfer_loading"></button>
     </div>
   </div>

@@ -19,7 +19,7 @@ import {ButtonModule} from "primeng/button";
 import {RippleModule} from "primeng/ripple";
 import {EffectsModule} from '@ngrx/effects';
 import {WalletEffects} from "./store/wallet/wallet.effects";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {SelectNodeComponent} from './components/select-node/select-node.component';
 import {MessageModule} from "primeng/message";
 import {ToastModule} from "primeng/toast";
@@ -28,11 +28,17 @@ import {MiscEffects} from "./store/misc/misc.effects";
 import {ConfirmPopupModule} from "primeng/confirmpopup";
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {environment} from "../environments/environment";
-import { HomeComponent } from './pages/home/home.component';
+import {HomeComponent} from './pages/home/home.component';
 import {CardModule} from "primeng/card";
-import { SelectWalletDropdownComponent } from './components/select-wallet-dropdown/select-wallet-dropdown.component';
+import {SelectWalletDropdownComponent} from './components/select-wallet-dropdown/select-wallet-dropdown.component';
 import {InputNumberModule} from "primeng/inputnumber";
-import { TransferTileComponent } from './pages/home/transfer-tile/transfer-tile.component';
+import {TransferTileComponent} from './pages/home/transfer-tile/transfer-tile.component';
+import {CookieService} from "ngx-cookie-service";
+import {AuthService} from "./services/auth.service";
+import {PageWrapperComponent} from './page-wrapper.component';
+import {LoginComponent} from './pages/login/login.component';
+import {miscReducer} from "./store/misc/misc.reducer";
+import {OverlayPanelModule} from "primeng/overlaypanel";
 
 @NgModule({
   declarations: [
@@ -42,11 +48,14 @@ import { TransferTileComponent } from './pages/home/transfer-tile/transfer-tile.
     SafeHtmlPipe,
     HomeComponent,
     SelectWalletDropdownComponent,
-    TransferTileComponent
+    TransferTileComponent,
+    PageWrapperComponent,
+    LoginComponent
   ],
   imports: [
     StoreModule.forRoot({
-      "wallets": walletReducer
+      "wallets": walletReducer,
+      "misc": miscReducer
     }),
     EffectsModule.forRoot([
       WalletEffects,
@@ -74,9 +83,20 @@ import { TransferTileComponent } from './pages/home/transfer-tile/transfer-tile.
     ToastModule,
     ConfirmPopupModule,
     CardModule,
-    InputNumberModule
+    InputNumberModule,
+    OverlayPanelModule
   ],
-  providers: [DialogService, MessageService, ConfirmationService],
+  providers: [
+    DialogService,
+    MessageService,
+    ConfirmationService,
+    CookieService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

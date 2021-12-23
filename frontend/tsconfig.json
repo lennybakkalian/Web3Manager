@@ -23,7 +23,6 @@
       "dom"
     ],
     "paths": {
-      "@shared": ["../shared"],
       "crypto": ["./node_modules/crypto-browserify"],
       "stream": ["./node_modules/stream-browserify"],
       "assert": ["./node_modules/assert"],

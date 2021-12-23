@@ -1,19 +1,22 @@
 import {Module} from '@nestjs/common';
-import {AppController} from './app.controller';
 import {AppService} from './app.service';
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {HttpModule} from "@nestjs/axios";
 import {ScheduleModule} from "@nestjs/schedule";
-import { WalletService } from './services/wallet.service';
-import { WalletController } from './controllers/wallet.controller';
+import {WalletService} from './services/wallet.service';
+import {WalletController} from './controllers/wallet.controller';
 import {WalletRepository} from "./repositories/Wallet.repository";
+import {ConfigRepository} from "./repositories/Config.repository";
+import {AuthService} from "./services/auth.service";
+import {AuthController} from "./controllers/auth.controller";
+import {PassportModule} from "@nestjs/passport";
 
 @Module({
     imports: [
         TypeOrmModule.forRoot({
             type: 'postgres',
             host: process.env.DB_HOST ?? 'localhost',
-            port: 9900,
+            port: 5432,
             username: 'w3m',
             password: 'w3m',
             database: 'w3m',
@@ -22,13 +25,19 @@ import {WalletRepository} from "./repositories/Wallet.repository";
             synchronize: true
         }),
         TypeOrmModule.forFeature([
-           WalletRepository
+            WalletRepository,
+            ConfigRepository
         ]),
         ScheduleModule.forRoot(),
-        HttpModule,
+        PassportModule.register({defaultStrategy: 'custom'}),
+        HttpModule
     ],
-    controllers: [AppController, WalletController],
-    providers: [AppService, WalletService],
+    controllers: [WalletController, AuthController],
+    providers: [
+        AppService,
+        WalletService,
+        AuthService
+    ],
 })
 export class AppModule {
 }

@@ -7,7 +7,7 @@ services:
     volumes:
       - w3m_db:/var/lib/postgresql/data
     ports:
-      - '9900:5432'
+      - '5432:5432'
     environment:
       - 'TZ=Europe/Berlin'
       - 'PGTZ=Europe/Berlin'

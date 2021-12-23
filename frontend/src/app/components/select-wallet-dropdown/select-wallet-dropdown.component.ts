@@ -8,11 +8,11 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import {IWallet} from "@shared";
 import {WalletStore} from "../../store/wallet/wallet.reducer";
 import {Store} from "@ngrx/store";
 import {map, Observable} from "rxjs";
 import {selector_wallets} from "../../store/wallet/wallet.selectors";
+import {IWallet} from "../../dto/IWallet";
 
 @Component({
   selector: 'app-select-wallet-dropdown',

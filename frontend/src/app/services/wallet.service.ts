@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {IWallet} from "@shared";
+import {IWallet} from "../dto/IWallet";
 
 @Injectable({
   providedIn: 'root'

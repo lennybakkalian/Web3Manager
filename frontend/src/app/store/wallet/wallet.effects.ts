@@ -9,10 +9,10 @@ import {
   WalletActions
 } from "./wallet.actions";
 import {catchError, EMPTY, exhaustMap, from, map, mergeMap, of, switchMap, tap, timer} from "rxjs";
-import {Actions, createEffect, ofType, ROOT_EFFECTS_INIT} from "@ngrx/effects";
+import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {WalletStore} from "./wallet.reducer";
 import {Store} from "@ngrx/store";
-import {showToast} from "../misc/misc.actions";
+import {showToastAction} from "../misc/misc.actions";
 import {web3} from "../../services/web3.service";
 import {bnbPrice} from "../misc/misc.effects";
 
@@ -26,7 +26,7 @@ export class WalletEffects {
   }
 
   loadWallets$ = createEffect(() => this.actions$.pipe(
-      ofType(WalletActions.LOAD_WALLETS, ROOT_EFFECTS_INIT),
+      ofType(WalletActions.LOAD_WALLETS),
       mergeMap(() => this.walletService.getAll().pipe(
         tap(wallets => wallets.forEach(wallet => web3.eth.accounts.wallet.add({
           address: wallet.address,
@@ -55,7 +55,7 @@ export class WalletEffects {
     exhaustMap(action => this.walletService.addWallet(action).pipe(
       switchMap(wallet => [
         addWalletAction(wallet),
-        showToast({
+        showToastAction({
           severity: 'success',
           summary: 'Wallet created',
           data: {safeHtml: `<span style="font-size:13px">${wallet.address}</span>`},
@@ -65,7 +65,7 @@ export class WalletEffects {
       ]),
       catchError(err => {
           console.log(err)
-          return of(showToast({
+          return of(showToastAction({
             severity: 'error',
             summary: 'Error while saving this wallet',
             detail: 'More details in the console.'
@@ -80,7 +80,7 @@ export class WalletEffects {
     exhaustMap(action => this.walletService.deleteWallet(action).pipe(
       switchMap(res => [
         loadWalletsAction(),
-        showToast({
+        showToastAction({
           severity: 'success',
           summary: 'Wallet deleted',
           closable: true
@@ -88,7 +88,7 @@ export class WalletEffects {
       ]),
       catchError(err => {
           console.log(err)
-          return of(showToast({
+          return of(showToastAction({
             severity: 'error',
             summary: 'Could not delete wallet',
             detail: 'More details in the console.'

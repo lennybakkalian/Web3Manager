@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  w3m_db:
+    image: postgres:14.0
+    container_name: w3m_db
+    volumes:
+      - w3m_db_prod:/var/lib/postgresql/data
+# CHANGE DB PASSWORD, IF U EXPOSE THE DATABASE !!!
+#    ports:
+#      - '9502:5432'
+    environment:
+      - 'TZ=Europe/Berlin'
+      - 'PGTZ=Europe/Berlin'
+      - 'POSTGRES_USER=w3m'
+      - 'POSTGRES_PASSWORD=w3m'
+      - 'POSTGRES_DB=w3m'
+      - 'POSTGRES_ENCODING=UNICODE'
+      - 'POSTGRES_COLLATE=C'
+      - 'POSTGRES_COLLATE_TYPE=C'
+    networks:
+      - w3m
+  w3m_backend:
+    build: backend
+    container_name: w3m_backend
+    restart: on-failure
+    depends_on:
+      - w3m_db
+    environment:
+      - 'DB_HOST=w3m_db'
+    networks:
+      - w3m
+  w3m_frontend:
+    build: frontend
+    container_name: w3m_frontend
+    depends_on:
+      - w3m_backend
+    networks:
+      - w3m
+    ports:
+      - '9551:80'
+volumes:
+  w3m_db_prod:
+    external: false
+networks:
+  w3m:

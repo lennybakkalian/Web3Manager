@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
-import {IWallet} from "@shared";
 import {Store} from "@ngrx/store";
 import {WalletStore} from "../../../store/wallet/wallet.reducer";
 import {selector_selectedWallet} from "../../../store/wallet/wallet.selectors";
 import {web3} from "../../../services/web3.service";
 import {bnbPrice} from "../../../store/misc/misc.effects";
 import {MessageService} from "primeng/api";
+import {IWallet} from "../../../dto/IWallet";
 
 @Component({
   selector: 'app-transfer-tile',
@@ -65,5 +65,9 @@ export class TransferTileComponent implements OnInit {
       })
     }
     this.transfer_loading = false
+  }
+
+  transferValueChanged($event: any) {
+    this.transfer_value = $event.value
   }
 }

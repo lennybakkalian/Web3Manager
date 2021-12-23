@@ -4,7 +4,7 @@ import {Component, OnInit} from '@angular/core';
   selector: 'app-select-node',
   template: `
     <div style="display:flex;gap:10px;padding:5px 0">
-      <input pInputText placeholder="Websocket URL" [(ngModel)]="endpoint"/>
+      <input pInputText placeholder="ws://... or wss://..." [(ngModel)]="endpoint"/>
       <button pButton class="p-button-info" (click)="setNode()"
               [disabled]="!endpoint.startsWith('ws://') && !endpoint.startsWith('wss://')">
         Set Node

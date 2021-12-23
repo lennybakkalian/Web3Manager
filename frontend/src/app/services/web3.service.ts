@@ -3,8 +3,8 @@ import Web3 from "web3";
 import {Store} from "@ngrx/store";
 import {WalletStore} from "../store/wallet/wallet.reducer";
 import {firstValueFrom, Observable} from "rxjs";
-import {IWallet} from "@shared";
 import {selector_selectedWallet} from "../store/wallet/wallet.selectors";
+import {IWallet} from "../dto/IWallet";
 
 export let web3 = new Web3()
 

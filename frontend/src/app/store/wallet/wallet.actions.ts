@@ -1,5 +1,5 @@
 import {createAction, props} from "@ngrx/store";
-import {IWallet} from "@shared";
+import {IWallet} from "../../dto/IWallet";
 
 export enum WalletActions {
   SAVE_WALLET = '[WALLET] save wallet',

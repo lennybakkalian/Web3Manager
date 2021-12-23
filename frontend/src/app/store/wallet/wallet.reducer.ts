@@ -1,6 +1,6 @@
-import {IWallet} from "@shared";
 import {createReducer, on} from "@ngrx/store";
 import * as actions from "./wallet.actions"
+import {IWallet} from "../../dto/IWallet";
 
 export interface WalletStore {
   wallets: IWallet[]

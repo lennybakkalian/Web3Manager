@@ -1,7 +1,7 @@
 import {Injectable} from '@nestjs/common';
 import {HttpService} from "@nestjs/axios";
-import {IWallet} from "@shared";
 import {WalletRepository} from "../repositories/Wallet.repository";
+import {IWallet} from "../dto/IWallet";
 
 @Injectable()
 export class WalletService {

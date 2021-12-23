@@ -23,7 +23,13 @@
   </ng-template>
   <ng-template pTemplate="body" let-wallet>
     <tr class="p-selectable-row">
-      <td>{{wallet.name}}</td>
+      <td>
+        <span (click)="op.show($event)">{{wallet.name}}</span>
+        <p-overlayPanel #op>
+          <label>Edit name</label><br/>
+          <input pInputText [ngModel]="wallet.name" (keyup.enter)="changeName(newName.value, wallet.id, op)" #newName autofocus/>
+        </p-overlayPanel>
+      </td>
       <td>{{wallet.address}}</td>
       <td style="text-align:right">{{$any(wallet?.balance | async)?.euro | number: '1.2-2'}}€</td>
       <td>

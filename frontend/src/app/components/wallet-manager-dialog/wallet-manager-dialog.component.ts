@@ -1,14 +1,16 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {DynamicDialogRef} from "primeng/dynamicdialog";
 import {WalletStore} from "../../store/wallet/wallet.reducer";
 import {Store} from "@ngrx/store";
-import {IWallet} from "@shared";
-import {Observable} from "rxjs";
+import {map, Observable} from "rxjs";
 import {selector_wallets} from "../../store/wallet/wallet.selectors";
 
 import * as walletActions from '../../store/wallet/wallet.actions'
-import {deleteWalletAction} from '../../store/wallet/wallet.actions'
+import {deleteWalletAction, loadWalletsAction} from '../../store/wallet/wallet.actions'
 import {ConfirmationService} from "primeng/api";
+import {OverlayPanel} from "primeng/overlaypanel";
+import {HttpClient} from "@angular/common/http";
+import {IWallet} from "../../dto/IWallet";
 
 @Component({
   selector: 'app-wallet-manager-dialog',
@@ -27,11 +29,13 @@ export class WalletManagerDialogComponent implements OnInit {
 
   constructor(private walletStore: Store<WalletStore>,
               private dialogRef: DynamicDialogRef,
-              private confirmationService: ConfirmationService) {
+              private confirmationService: ConfirmationService,
+              private changeDetectorRef: ChangeDetectorRef,
+              private http: HttpClient) {
   }
 
   ngOnInit() {
-    this.$wallets = this.walletStore.select(selector_wallets)
+    this.$wallets = this.walletStore.select(selector_wallets).pipe(map(wallets => wallets.flatMap(wallet => Object.assign({}, wallet))))
   }
 
   createWallet() {
@@ -52,5 +56,12 @@ export class WalletManagerDialogComponent implements OnInit {
 
   async copyPrivateKey(wallet: IWallet) {
     await navigator.clipboard.writeText(wallet.privateKey)
+  }
+
+  changeName(value: string, id: number, op: OverlayPanel) {
+    this.http.post(`/api/wallet/${id}`, {name: value}).subscribe(res => {
+      this.walletStore.dispatch(loadWalletsAction())
+    })
+    op.hide()
   }
 }

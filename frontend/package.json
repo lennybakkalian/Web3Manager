@@ -26,6 +26,7 @@
     "crypto-browserify": "^3.12.0",
     "https-browserify": "^1.0.0",
     "moment": "^2.29.1",
+    "ngx-cookie-service": "^13.1.2",
     "os-browserify": "^0.3.0",
     "primeicons": "^5.0.0",
     "primeng": "^13.0.3",
