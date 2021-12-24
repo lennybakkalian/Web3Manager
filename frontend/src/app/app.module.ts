@@ -41,6 +41,7 @@ import {miscReducer} from "./store/misc/misc.reducer";
 import {OverlayPanelModule} from "primeng/overlaypanel";
 import {SettingsComponent} from './pages/settings/settings.component';
 import {MonacoEditorModule} from "ngx-monaco-editor";
+import {ConfirmDialogModule} from "primeng/confirmdialog";
 
 @NgModule({
   declarations: [
@@ -92,7 +93,8 @@ import {MonacoEditorModule} from "ngx-monaco-editor";
     ConfirmPopupModule,
     CardModule,
     InputNumberModule,
-    OverlayPanelModule
+    OverlayPanelModule,
+    ConfirmDialogModule
   ],
   providers: [
     DialogService,
