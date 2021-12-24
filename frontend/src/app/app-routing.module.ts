@@ -4,6 +4,7 @@ import {LoginComponent} from "./pages/login/login.component";
 import {PageWrapperComponent} from "./page-wrapper.component";
 import {HomeComponent} from "./pages/home/home.component";
 import {SettingsComponent} from "./pages/settings/settings.component";
+import {PendingChangesGuard} from "./misc/pending-changes.guard";
 
 @NgModule({
   imports: [RouterModule.forRoot([
@@ -18,7 +19,8 @@ import {SettingsComponent} from "./pages/settings/settings.component";
         },
         {
           path: 'settings',
-          component: SettingsComponent
+          component: SettingsComponent,
+          canDeactivate: [PendingChangesGuard]
         },
         {
           path: 'lookup',

@@ -1,3 +1,5 @@
-<ngx-monaco-editor [options]="monacoEditorConfig" [(ngModel)]="config"
-                   style="height:500px"></ngx-monaco-editor>
-<button pButton class="p-button-success" (click)="saveChanges()">Save changes</button>
+<div style="padding:30px">
+  <ngx-monaco-editor [options]="monacoEditorConfig" [(ngModel)]="config"
+                     style="height:500px"></ngx-monaco-editor>
+  <button pButton class="p-button-success" (click)="saveChanges()" *ngIf="loadedConfig != config">Save changes</button>
+</div>

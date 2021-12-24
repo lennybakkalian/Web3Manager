@@ -35,7 +35,17 @@ export class MiscEffects {
   saveConfig$ = createEffect(() => this.actions$.pipe(
     ofType(saveConfig),
     switchMap(action => this.http.post(`/api/config`, action.config).pipe(
-      map(() => loadConfig())
+      switchMap(_ =>
+        [
+          loadConfig(),
+          showToastAction({
+            severity: 'success',
+            summary: 'Configuration saved!',
+            closable: true,
+            life: 1000 * 6
+          })
+        ]
+      )
     ))
   ))
 }
