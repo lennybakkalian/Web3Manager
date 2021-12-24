@@ -11,6 +11,7 @@ import {ConfirmationService} from "primeng/api";
 import {OverlayPanel} from "primeng/overlaypanel";
 import {HttpClient} from "@angular/common/http";
 import {IWallet} from "../../dto/IWallet";
+import {copyToClipboard} from "../../misc/utils";
 
 @Component({
   selector: 'app-wallet-manager-dialog',
@@ -54,9 +55,7 @@ export class WalletManagerDialogComponent implements OnInit {
     });
   }
 
-  async copyPrivateKey(wallet: IWallet) {
-    await navigator.clipboard.writeText(wallet.privateKey)
-  }
+  copyPrivateKey = (wallet: IWallet) => copyToClipboard(wallet.privateKey)
 
   changeName(value: string, id: number, op: OverlayPanel) {
     this.http.post(`/api/wallet/${id}`, {name: value}).subscribe(res => {
