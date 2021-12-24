@@ -54,7 +54,8 @@ export class WalletEffects {
     ofType(saveWalletAction),
     exhaustMap(action => this.walletService.addWallet(action).pipe(
       switchMap(wallet => [
-        addWalletAction(wallet),
+        //addWalletAction({wallet: wallet}),
+        loadWalletsAction(),
         showToastAction({
           severity: 'success',
           summary: 'Wallet created',

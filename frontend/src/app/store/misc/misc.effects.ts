@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
-import {tap, timer} from "rxjs";
+import {map, switchMap, tap, timer} from "rxjs";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
-import {showToastAction} from "./misc.actions";
+import {loadConfig, saveConfig, setConfig, showToastAction} from "./misc.actions";
 import {MessageService} from "primeng/api";
 import {HttpClient} from "@angular/common/http";
 
@@ -25,4 +25,17 @@ export class MiscEffects {
     this.http.get<{ symbol: string, price: string }>(`https://api.binance.com/api/v3/ticker/price?symbol=BNBEUR`).subscribe(res => bnbPrice = parseFloat(res.price))
   })), {dispatch: false})
 
+  loadConfig$ = createEffect(() => this.actions$.pipe(
+    ofType(loadConfig),
+    switchMap(() => this.http.get(`/api/config`).pipe(
+      map(conf => setConfig({config: conf}))
+    ))
+  ))
+
+  saveConfig$ = createEffect(() => this.actions$.pipe(
+    ofType(saveConfig),
+    switchMap(action => this.http.post(`/api/config`, action.config).pipe(
+      map(() => loadConfig())
+    ))
+  ))
 }

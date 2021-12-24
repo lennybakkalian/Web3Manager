@@ -3,8 +3,12 @@ import {Message} from "primeng/api";
 
 export enum MiscActions {
   SHOW_TOAST = '[MISC] show toast',
-  LOGIN = '[MISC] login'
+  SET_CONFIG = '[MISC] set config',
+  LOAD_CONFIG = '[MISC] load config',
+  SAVE_CONFIG = '[MISC] save config'
 }
 
 export const showToastAction = createAction(MiscActions.SHOW_TOAST, props<Message>())
-export const setLoggedInAction = createAction(MiscActions.LOGIN, props<Boolean>())
+export const setConfig = createAction(MiscActions.SET_CONFIG, props<{ config: any }>())
+export const saveConfig = createAction(MiscActions.SAVE_CONFIG, props<{ config: any }>())
+export const loadConfig = createAction(MiscActions.LOAD_CONFIG)

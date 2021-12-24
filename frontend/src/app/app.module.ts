@@ -39,6 +39,8 @@ import {PageWrapperComponent} from './page-wrapper.component';
 import {LoginComponent} from './pages/login/login.component';
 import {miscReducer} from "./store/misc/misc.reducer";
 import {OverlayPanelModule} from "primeng/overlaypanel";
+import {SettingsComponent} from './pages/settings/settings.component';
+import {MonacoEditorModule} from "ngx-monaco-editor";
 
 @NgModule({
   declarations: [
@@ -50,7 +52,8 @@ import {OverlayPanelModule} from "primeng/overlaypanel";
     SelectWalletDropdownComponent,
     TransferTileComponent,
     PageWrapperComponent,
-    LoginComponent
+    LoginComponent,
+    SettingsComponent
   ],
   imports: [
     StoreModule.forRoot({
@@ -65,6 +68,11 @@ import {OverlayPanelModule} from "primeng/overlaypanel";
       maxAge: 25,
       logOnly: environment.production,
       autoPause: true
+    }),
+    MonacoEditorModule.forRoot({
+      defaultOptions: {
+        theme: 'vs-dark'
+      }
     }),
     BrowserModule,
     BrowserAnimationsModule,

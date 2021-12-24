@@ -10,6 +10,8 @@ import {ConfigRepository} from "./repositories/Config.repository";
 import {AuthService} from "./services/auth.service";
 import {AuthController} from "./controllers/auth.controller";
 import {PassportModule} from "@nestjs/passport";
+import { ConfigService } from './services/config.service';
+import { MiscController } from './controllers/misc.controller';
 
 @Module({
     imports: [
@@ -32,11 +34,12 @@ import {PassportModule} from "@nestjs/passport";
         PassportModule.register({defaultStrategy: 'custom'}),
         HttpModule
     ],
-    controllers: [WalletController, AuthController],
+    controllers: [WalletController, AuthController, MiscController],
     providers: [
         AppService,
         WalletService,
-        AuthService
+        AuthService,
+        ConfigService
     ],
 })
 export class AppModule {

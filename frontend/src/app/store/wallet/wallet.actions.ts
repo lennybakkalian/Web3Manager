@@ -17,4 +17,4 @@ export const selectWalletAction = createAction(WalletActions.SELECT_WALLET, prop
 export const loadWalletsAction = createAction(WalletActions.LOAD_WALLETS)
 
 export const setWalletsAction = createAction(WalletActions.SET_WALLETS, props<{ wallets: IWallet[] }>())
-export const addWalletAction = createAction(WalletActions.ADD_WALLET, props<IWallet>())
+export const addWalletAction = createAction(WalletActions.ADD_WALLET, props<{ wallet: IWallet }>())

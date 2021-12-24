@@ -13,6 +13,7 @@ import Web3 from "web3";
 import {MiscStore} from "./store/misc/misc.reducer";
 import {CookieService} from "ngx-cookie-service";
 import {IWallet} from "./dto/IWallet";
+import {loadConfig} from "./store/misc/misc.actions";
 
 @Component({
   selector: 'app-page-wrapper',
@@ -41,6 +42,10 @@ export class PageWrapperComponent implements OnInit {
       routerLink: '/'
     },
     {
+      label: 'Lookup',
+      routerLink: 'lookup'
+    },
+    {
       label: 'Wallets',
       command: () => this.dialogService.open(WalletManagerDialogComponent, {
         header: 'Wallet manager',
@@ -55,6 +60,10 @@ export class PageWrapperComponent implements OnInit {
           command: () => this.dialogService.open(SelectNodeComponent, {
             header: 'Change your websocket node'
           })
+        },
+        {
+          label: 'Change settings',
+          routerLink: 'settings'
         }
       ]
     }
@@ -72,6 +81,7 @@ export class PageWrapperComponent implements OnInit {
 
   ngOnInit() {
     this.walletStore.dispatch(loadWalletsAction())
+    this.miscStore.dispatch(loadConfig())
 
     this.$wallets = this.walletStore.select(selector_wallets)
     this.$selectedWallet = this.walletStore.select(selector_selectedWallet)

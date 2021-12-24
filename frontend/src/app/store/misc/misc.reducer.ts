@@ -3,14 +3,14 @@ import * as actions from "./misc.actions";
 import {initialWalletState} from "../wallet/wallet.reducer";
 
 export interface MiscStore {
-  loggedIn: boolean
+  config: any
 }
 
 export const initialMiscState: MiscStore = {
-  loggedIn: false
+  config: null
 }
 
 export const miscReducer = createReducer(
   initialWalletState,
-  on(actions.setLoggedInAction, (state, payload) => ({...state, loggedIn: payload}))
+  on(actions.setConfig, (state, payload) => ({...state, config: payload.config}))
 )

@@ -3,6 +3,7 @@ import {RouterModule} from '@angular/router';
 import {LoginComponent} from "./pages/login/login.component";
 import {PageWrapperComponent} from "./page-wrapper.component";
 import {HomeComponent} from "./pages/home/home.component";
+import {SettingsComponent} from "./pages/settings/settings.component";
 
 @NgModule({
   imports: [RouterModule.forRoot([
@@ -14,6 +15,14 @@ import {HomeComponent} from "./pages/home/home.component";
           path: '',
           pathMatch: 'full',
           component: HomeComponent
+        },
+        {
+          path: 'settings',
+          component: SettingsComponent
+        },
+        {
+          path: 'lookup',
+          loadChildren: () => import('./lookup/look-up.module').then(m => m.LookUpModule)
         }
       ]
     },
