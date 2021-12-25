@@ -1,0 +1,50 @@
+<div style="padding: 10px;display:flex; flex-direction:column">
+
+
+  <div>
+    <div *ngIf="(resolvedAddress | async)?.internalName" style="display:flex;flex-direction:column">
+      <span style="font-size:30px">{{(resolvedAddress | async)?.internalName}}</span>
+      <span style="color:grey;font-size:15px">{{(resolvedAddress | async)?.address}}</span>
+    </div>
+    <span style="font-size:30px"
+          *ngIf="!(resolvedAddress | async)?.internalName">{{(resolvedAddress | async)?.address}}</span>
+  </div>
+
+  <div>
+
+    <div class="p-datatable">
+      <div class="p-datatable-wrapper">
+        <table class="p-datatable-table p-datatable-sm tx-table">
+          <thead class="p-datatable-thead">
+          <tr>
+            <th>From</th>
+            <th>To</th>
+            <th>Block</th>
+            <th>Value</th>
+          </tr>
+          </thead>
+
+          <tbody class="p-datatable-tbody">
+          <tr *ngFor="let tx of transactions">
+            <td style="font-size:13px"><a routerLink="/lookup/address/{{tx.from}}">{{tx.from}}</a></td>
+            <td style="font-size:13px">{{tx.to}}</td>
+            <td>{{tx.blockNumber}}</td>
+            <td>
+              <ng-container *ngIf="tx.value != 0">
+                <div style="font-weight: bold; width:80px;display:inline-block">
+                  {{(tx.value / 10e17 * getBnbPrice()) | number: '1.2-2'}}€
+                </div>
+                {{(tx.value / 10e17) | number: '1.0-4'}} bnb
+              </ng-container>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+  </div>
+
+
+</div>

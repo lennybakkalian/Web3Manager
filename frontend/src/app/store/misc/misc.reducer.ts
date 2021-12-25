@@ -1,6 +1,5 @@
 import {createReducer, on} from "@ngrx/store";
 import * as actions from "./misc.actions";
-import {initialWalletState} from "../wallet/wallet.reducer";
 
 export interface MiscStore {
   config: any
@@ -11,6 +10,6 @@ export const initialMiscState: MiscStore = {
 }
 
 export const miscReducer = createReducer(
-  initialWalletState,
+  initialMiscState,
   on(actions.setConfig, (state, payload) => ({...state, config: payload.config}))
 )

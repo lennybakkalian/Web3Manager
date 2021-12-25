@@ -14,6 +14,7 @@ import {MiscStore} from "./store/misc/misc.reducer";
 import {CookieService} from "ngx-cookie-service";
 import {IWallet} from "./dto/IWallet";
 import {loadConfig} from "./store/misc/misc.actions";
+import {selector_config} from "./store/misc/misc.selector";
 
 @Component({
   selector: 'app-page-wrapper',
@@ -71,6 +72,7 @@ export class PageWrapperComponent implements OnInit {
 
   $wallets: Observable<IWallet[]>
   $selectedWallet: Observable<IWallet | null>
+  $config: Observable<any>
 
   constructor(public walletStore: Store<WalletStore>,
               public miscStore: Store<MiscStore>,
@@ -82,6 +84,7 @@ export class PageWrapperComponent implements OnInit {
   ngOnInit() {
     this.walletStore.dispatch(loadWalletsAction())
     this.miscStore.dispatch(loadConfig())
+    this.$config = this.miscStore.select(selector_config)
 
     this.$wallets = this.walletStore.select(selector_wallets)
     this.$selectedWallet = this.walletStore.select(selector_selectedWallet)

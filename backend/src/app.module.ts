@@ -10,8 +10,10 @@ import {ConfigRepository} from "./repositories/Config.repository";
 import {AuthService} from "./services/auth.service";
 import {AuthController} from "./controllers/auth.controller";
 import {PassportModule} from "@nestjs/passport";
-import { ConfigService } from './services/config.service';
-import { MiscController } from './controllers/misc.controller';
+import {ConfigService} from './services/config.service';
+import {MiscController} from './controllers/misc.controller';
+import {AddressRepository} from "./repositories/Address.repository";
+import {AddressController} from './controllers/address.controller';
 
 @Module({
     imports: [
@@ -28,13 +30,14 @@ import { MiscController } from './controllers/misc.controller';
         }),
         TypeOrmModule.forFeature([
             WalletRepository,
-            ConfigRepository
+            ConfigRepository,
+            AddressRepository
         ]),
         ScheduleModule.forRoot(),
         PassportModule.register({defaultStrategy: 'custom'}),
         HttpModule
     ],
-    controllers: [WalletController, AuthController, MiscController],
+    controllers: [WalletController, AuthController, MiscController, AddressController],
     providers: [
         AppService,
         WalletService,

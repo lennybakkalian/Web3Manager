@@ -6,6 +6,12 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
-.p-menubar{
+.p-menubar {
   padding: 0 !important;
+}
+
+a {
+  text-decoration: none;
+  color: unset;
+  cursor: Pointer;
 }

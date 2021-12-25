@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {CookieService} from "ngx-cookie-service";
+import * as moment from "moment";
+
 
 @Component({
   selector: 'app-login',
@@ -23,7 +25,7 @@ export class LoginComponent implements OnInit {
     this.http.post(`/api/auth/login`, {key: this.authKey}).subscribe(res => {
       if (res) {
         this.cookieService.delete('w3m.key')
-        this.cookieService.set('w3m.key', this.authKey)
+        this.cookieService.set('w3m.key', this.authKey, {expires: moment().add(1, 'years').unix()})
         location.href = '/'
       } else {
         this.displayError = true
