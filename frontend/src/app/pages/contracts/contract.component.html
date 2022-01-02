@@ -29,8 +29,13 @@
 
           </div>
           <div style="display:flex;gap:10px;margin-top:10px">
-            <p-button label="Call" styleClass="p-button-help"></p-button>
-            <p-button label="Send transaction" styleClass="p-button-danger"></p-button>
+            <p-button label="Call" styleClass="p-button-help" (onClick)="call()"
+                      [disabled]="($selectedWallet | async) == null"></p-button>
+            <p-button label="Send transaction" styleClass="p-button-danger" (onClick)="send($event)"
+                      [disabled]="($selectedWallet | async) == null"></p-button>
+          </div>
+          <div *ngIf="state.result">
+            {{state.result}}
           </div>
         </div>
       </ng-container>
