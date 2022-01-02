@@ -14,6 +14,8 @@ import {ConfigService} from './services/config.service';
 import {MiscController} from './controllers/misc.controller';
 import {AddressRepository} from "./repositories/Address.repository";
 import {AddressController} from './controllers/address.controller';
+import {ContractController} from './controllers/contract.controller';
+import {ContractRepository} from "./repositories/Contract.repository";
 
 @Module({
     imports: [
@@ -31,13 +33,14 @@ import {AddressController} from './controllers/address.controller';
         TypeOrmModule.forFeature([
             WalletRepository,
             ConfigRepository,
-            AddressRepository
+            AddressRepository,
+            ContractRepository
         ]),
         ScheduleModule.forRoot(),
         PassportModule.register({defaultStrategy: 'custom'}),
         HttpModule
     ],
-    controllers: [WalletController, AuthController, MiscController, AddressController],
+    controllers: [WalletController, AuthController, MiscController, AddressController, ContractController],
     providers: [
         AppService,
         WalletService,

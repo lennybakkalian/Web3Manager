@@ -1,0 +1,16 @@
+.abiItem {
+  padding: 5px 10px;
+  display: flex;
+  flex-direction: column;
+  cursor: Pointer;
+  border: solid 1px transparent;
+
+  &:hover {
+    background: #1a1a1a;
+  }
+
+  &.selected {
+    border-color: white;
+    background: #1a1a1a;
+  }
+}

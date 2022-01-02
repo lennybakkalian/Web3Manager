@@ -42,6 +42,9 @@ import {OverlayPanelModule} from "primeng/overlaypanel";
 import {SettingsComponent} from './pages/settings/settings.component';
 import {MonacoEditorModule} from "ngx-monaco-editor";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
+import {ContractComponent} from './pages/contracts/contract.component';
+import { CreateContractComponent } from './pages/contracts/create-contract.component';
+import {InputTextareaModule} from "primeng/inputtextarea";
 
 @NgModule({
   declarations: [
@@ -54,7 +57,9 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
     TransferTileComponent,
     PageWrapperComponent,
     LoginComponent,
-    SettingsComponent
+    SettingsComponent,
+    ContractComponent,
+    CreateContractComponent
   ],
   imports: [
     StoreModule.forRoot({
@@ -94,7 +99,8 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
     CardModule,
     InputNumberModule,
     OverlayPanelModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    InputTextareaModule
   ],
   providers: [
     DialogService,

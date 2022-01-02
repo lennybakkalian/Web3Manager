@@ -1,0 +1,39 @@
+<div *ngIf="contract" style="display:flex;flex-direction:column">
+  <div style="display:flex;flex-direction:column;padding:20px 10px">
+    <b style="font-size:25px">{{contract.name}}</b>
+    <small>{{contract.address}}</small>
+  </div>
+
+
+  <div style="display:flex;flex-direction:row">
+    <div>
+      <div *ngFor="let abi of getAbiFunctions()" class="abiItem" (click)="selectAbi(abi)"
+           [ngClass]="{'selected': state.selectedAbiItem == abi}">
+      <span>
+        {{abi.type}}
+        {{abi.name}}
+      </span>
+      </div>
+    </div>
+    <div style="flex-grow:1;padding:10px">
+      <ng-container *ngIf="state.selectedAbiItem">
+        <div style="display:flex;flex-direction:column">
+          <span style="margin-bottom:20px">Selected: <b>{{state.selectedAbiItem.name}}</b></span>
+          <div style="display:flex;flex-direction:column;gap:10px">
+
+            <div *ngFor="let input of state.selectedAbiItem.inputs; let i = index"
+                 style="display:flex;flex-direction:column">
+              <label>{{input.name}}</label>
+              <input pInputText style="padding: 2px" [placeholder]="input.type" [(ngModel)]="state.inputs[i]"/>
+            </div>
+
+          </div>
+          <div style="display:flex;gap:10px;margin-top:10px">
+            <p-button label="Call" styleClass="p-button-help"></p-button>
+            <p-button label="Send transaction" styleClass="p-button-danger"></p-button>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

@@ -5,6 +5,7 @@ import {PageWrapperComponent} from "./page-wrapper.component";
 import {HomeComponent} from "./pages/home/home.component";
 import {SettingsComponent} from "./pages/settings/settings.component";
 import {PendingChangesGuard} from "./misc/pending-changes.guard";
+import {ContractComponent} from "./pages/contracts/contract.component";
 
 @NgModule({
   imports: [RouterModule.forRoot([
@@ -23,8 +24,8 @@ import {PendingChangesGuard} from "./misc/pending-changes.guard";
           canDeactivate: [PendingChangesGuard]
         },
         {
-          path: 'lookup',
-          loadChildren: () => import('./lookup/look-up.module').then(m => m.LookUpModule)
+          path: 'contract/:id',
+          component: ContractComponent
         }
       ]
     },

@@ -15,6 +15,8 @@ import {CookieService} from "ngx-cookie-service";
 import {IWallet} from "./dto/IWallet";
 import {loadConfig} from "./store/misc/misc.actions";
 import {selector_config} from "./store/misc/misc.selector";
+import {CreateContractComponent} from "./pages/contracts/create-contract.component";
+import {ContractService} from "./services/contract.service";
 
 @Component({
   selector: 'app-page-wrapper',
@@ -43,8 +45,16 @@ export class PageWrapperComponent implements OnInit {
       routerLink: '/'
     },
     {
-      label: 'Lookup',
-      routerLink: 'lookup'
+      label: 'Contracts',
+      items: [
+        {
+          label: 'Create',
+          command: () => this.dialogService.open(CreateContractComponent, {
+            header: 'Create contract',
+            width: '1000px'
+          })
+        }
+      ]
     },
     {
       label: 'Wallets',
@@ -78,7 +88,8 @@ export class PageWrapperComponent implements OnInit {
               public miscStore: Store<MiscStore>,
               private dialogService: DialogService,
               public web3Service: Web3Service,
-              private cookieService: CookieService) {
+              private cookieService: CookieService,
+              private contractService: ContractService) {
   }
 
   ngOnInit() {
@@ -88,6 +99,15 @@ export class PageWrapperComponent implements OnInit {
 
     this.$wallets = this.walletStore.select(selector_wallets)
     this.$selectedWallet = this.walletStore.select(selector_selectedWallet)
+
+    this.contractService.getContracts().subscribe(contracts => {
+      contracts.forEach(contract => {
+        this.items[1].items!!.push({
+          label: contract.name,
+          routerLink: `contract/${contract.id}`
+        })
+      })
+    })
 
     // load node endpoint
     this.nodeEndpoint = localStorage.getItem('w3m.node')

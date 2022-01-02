@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
     this.http.post(`/api/auth/login`, {key: this.authKey}).subscribe(res => {
       if (res) {
         this.cookieService.delete('w3m.key')
-        this.cookieService.set('w3m.key', this.authKey, {expires: moment().add(1, 'years').unix()})
+        this.cookieService.set('w3m.key', this.authKey, {expires: moment().add(1, 'years').toDate()})
         location.href = '/'
       } else {
         this.displayError = true
