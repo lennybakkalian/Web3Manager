@@ -20,7 +20,7 @@ export class ContractComponent implements OnInit, OnDestroy {
 
   contract: IContract | null
   state: {
-    value?: number;
+    value: number;
     selectedAbiItem?: AbiItem,
     inputs: {
       [index: string]: string
@@ -30,7 +30,8 @@ export class ContractComponent implements OnInit, OnDestroy {
   } = {
     inputs: {},
     result: '',
-    loading: false
+    loading: false,
+    value: 0
   }
   decimalCalculator = 8
 
@@ -50,7 +51,7 @@ export class ContractComponent implements OnInit, OnDestroy {
 
     this.activatedRoute.params.subscribe(params => {
       this.contract = null
-      this.state = {inputs: {}, result: '', loading: false, value: undefined}
+      this.state = {inputs: {}, result: '', loading: false, value: 0}
       this.contractService.getContract(params['id']).subscribe(c => this.contract = c)
       console.log(params)
     })
