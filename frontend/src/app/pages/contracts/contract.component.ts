@@ -21,11 +21,15 @@ export class ContractComponent implements OnInit, OnDestroy {
   contract: IContract | null
   state: {
     selectedAbiItem?: AbiItem,
-    inputs: any,
-    result: any
+    inputs: {
+      [index: string]: string
+    },
+    result: any,
+    loading: boolean
   } = {
     inputs: {},
-    result: ''
+    result: '',
+    loading: false
   }
 
   $subscriptions = new Subscription()
@@ -44,7 +48,7 @@ export class ContractComponent implements OnInit, OnDestroy {
 
     this.activatedRoute.params.subscribe(params => {
       this.contract = null
-      this.state = {inputs: {}, result: ''}
+      this.state = {inputs: {}, result: '', loading: false}
       this.contractService.getContract(params['id']).subscribe(c => this.contract = c)
       console.log(params)
     })
@@ -58,6 +62,7 @@ export class ContractComponent implements OnInit, OnDestroy {
     this.state.selectedAbiItem = abi
     this.state.inputs = {}
     this.state.result = ''
+    this.state.loading = false
   }
 
   call() {
@@ -70,7 +75,7 @@ export class ContractComponent implements OnInit, OnDestroy {
       message: 'Do you really want to perform this transaction?',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        // send transaction
+        this.exec('send')
       }
     });
   }
@@ -79,12 +84,34 @@ export class ContractComponent implements OnInit, OnDestroy {
 
     const contract = new web3.eth.Contract(this.contract!!.abi, this.contract!!.address)
 
+    this.state.loading = true
+    try {
 
-    if (method == 'call') {
-      this.state.result = await contract.methods[this.state.selectedAbiItem!!.name!!].apply(null, Object.values(this.state.inputs)).call({from: this.selectedWallet?.address})
+      const input = Object.keys(this.state.inputs).map((value, index) => {
+          if (this.state.selectedAbiItem!!.inputs!![index].type.endsWith("[]"))
+            return JSON.parse(this.state.inputs[index])
+          return this.state.inputs[index]
+        }
+      )
+
+
+      if (method == 'call') {
+        this.state.result = await contract.methods[this.state.selectedAbiItem!!.name!!].apply(null, input).call({from: this.selectedWallet?.address})
+      } else {
+        const tx = this.state.result = await contract.methods[this.state.selectedAbiItem!!.name!!].apply(null, input)
+        await tx.send({
+          from: this.selectedWallet?.address,
+          gas: await tx.estimateGas({from: this.selectedWallet?.address})
+        })
+      }
+    } catch (e) {
+      console.error(e)
+      this.state.result = e as string
     }
+    this.state.loading = false
 
   }
+
 
   ngOnDestroy() {
     this.$subscriptions.unsubscribe()
