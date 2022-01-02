@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {IContract} from "../../dto/IContract";
 import {ContractService} from "../../services/contract.service";
 import {AbiItem} from 'web3-utils'
 import {Store} from "@ngrx/store";
 import {WalletStore} from "../../store/wallet/wallet.reducer";
-import {Observable} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {IWallet} from "../../dto/IWallet";
 import {selector_selectedWallet} from "../../store/wallet/wallet.selectors";
 import {ConfirmationService} from "primeng/api";
@@ -16,7 +16,7 @@ import {web3} from "../../services/web3.service";
   templateUrl: './contract.component.html',
   styleUrls: ['./contract.component.scss']
 })
-export class ContractComponent implements OnInit {
+export class ContractComponent implements OnInit, OnDestroy {
 
   contract: IContract | null
   state: {
@@ -28,7 +28,9 @@ export class ContractComponent implements OnInit {
     result: ''
   }
 
+  $subscriptions = new Subscription()
   $selectedWallet: Observable<IWallet | null>
+  selectedWallet: IWallet | null
 
   constructor(private activatedRoute: ActivatedRoute,
               private contractService: ContractService,
@@ -38,6 +40,8 @@ export class ContractComponent implements OnInit {
 
   ngOnInit() {
     this.$selectedWallet = this.walletStore.select(selector_selectedWallet)
+    this.$subscriptions.add(this.walletStore.select(selector_selectedWallet).subscribe(w => this.selectedWallet = w))
+
     this.activatedRoute.params.subscribe(params => {
       this.contract = null
       this.state = {inputs: {}, result: ''}
@@ -77,8 +81,12 @@ export class ContractComponent implements OnInit {
 
 
     if (method == 'call') {
-      this.state.result = await contract.methods[this.state.selectedAbiItem!!.name!!].apply(null, Object.values(this.state.inputs)).call()
+      this.state.result = await contract.methods[this.state.selectedAbiItem!!.name!!].apply(null, Object.values(this.state.inputs)).call({from: this.selectedWallet?.address})
     }
 
+  }
+
+  ngOnDestroy() {
+    this.$subscriptions.unsubscribe()
   }
 }
