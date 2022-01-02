@@ -20,6 +20,7 @@ export class ContractComponent implements OnInit, OnDestroy {
 
   contract: IContract | null
   state: {
+    value?: number;
     selectedAbiItem?: AbiItem,
     inputs: {
       [index: string]: string
@@ -31,6 +32,7 @@ export class ContractComponent implements OnInit, OnDestroy {
     result: '',
     loading: false
   }
+  decimalCalculator = 8
 
   $subscriptions = new Subscription()
   $selectedWallet: Observable<IWallet | null>
@@ -48,7 +50,7 @@ export class ContractComponent implements OnInit, OnDestroy {
 
     this.activatedRoute.params.subscribe(params => {
       this.contract = null
-      this.state = {inputs: {}, result: '', loading: false}
+      this.state = {inputs: {}, result: '', loading: false, value: undefined}
       this.contractService.getContract(params['id']).subscribe(c => this.contract = c)
       console.log(params)
     })
@@ -97,14 +99,18 @@ export class ContractComponent implements OnInit, OnDestroy {
 
       if (method == 'call') {
         this.state.result = JSON.stringify(
-          await contract.methods[this.state.selectedAbiItem!!.name!!].apply(null, input).call({from: this.selectedWallet?.address})
+          await contract.methods[this.state.selectedAbiItem!!.name!!].apply(null, input).call({
+            from: this.selectedWallet?.address,
+            value: Number(this.state.value)
+          })
         )
       } else {
         const tx = this.state.result = await contract.methods[this.state.selectedAbiItem!!.name!!].apply(null, input)
         this.state.result = JSON.stringify(
           await tx.send({
             from: this.selectedWallet?.address,
-            gas: await tx.estimateGas({from: this.selectedWallet?.address})
+            gas: await tx.estimateGas({from: this.selectedWallet?.address}),
+            value: Number(this.state.value)
           })
         )
       }
@@ -116,6 +122,9 @@ export class ContractComponent implements OnInit, OnDestroy {
 
   }
 
+  pow(x: number, y: number){
+    return Math.pow(x, y)
+  }
 
   ngOnDestroy() {
     this.$subscriptions.unsubscribe()

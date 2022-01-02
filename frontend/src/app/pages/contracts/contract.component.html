@@ -31,9 +31,17 @@
           <div style="display:flex;gap:10px;margin-top:10px;justify-content:space-between">
             <p-button label="Call" styleClass="p-button-help" (onClick)="call()"
                       [disabled]="($selectedWallet | async) == null" [loading]="state.loading"></p-button>
-            <p-button label="Send transaction" styleClass="p-button-danger" (onClick)="send($event)"
-                      [loading]="state.loading"
-                      [disabled]="($selectedWallet | async) == null"></p-button>
+            <div style="display:flex;gap:5px">
+              <div *ngIf="state.value" style="text-align:right;font-size:12px">
+                {{state.value / 10e17}} bnb =<br/>
+                {{state.value / pow(10, decimalCalculator)}} * <input placeholder="decimals" style="border:none;width:35px" [(ngModel)]="decimalCalculator" type="number"> =<br/>
+                {{state.value | number}} =
+              </div>
+              <input pInputText placeholder="Value" style="padding:5px;width:300px" [(ngModel)]="state.value" type="number">
+              <p-button label="Send transaction" styleClass="p-button-danger" (onClick)="send($event)"
+                        [loading]="state.loading"
+                        [disabled]="($selectedWallet | async) == null"></p-button>
+            </div>
           </div>
           <div *ngIf="state.result">
             {{state.result}}
