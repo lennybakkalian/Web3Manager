@@ -96,13 +96,17 @@ export class ContractComponent implements OnInit, OnDestroy {
 
 
       if (method == 'call') {
-        this.state.result = await contract.methods[this.state.selectedAbiItem!!.name!!].apply(null, input).call({from: this.selectedWallet?.address})
+        this.state.result = JSON.stringify(
+          await contract.methods[this.state.selectedAbiItem!!.name!!].apply(null, input).call({from: this.selectedWallet?.address})
+        )
       } else {
         const tx = this.state.result = await contract.methods[this.state.selectedAbiItem!!.name!!].apply(null, input)
-        await tx.send({
-          from: this.selectedWallet?.address,
-          gas: await tx.estimateGas({from: this.selectedWallet?.address})
-        })
+        this.state.result = JSON.stringify(
+          await tx.send({
+            from: this.selectedWallet?.address,
+            gas: await tx.estimateGas({from: this.selectedWallet?.address})
+          })
+        )
       }
     } catch (e) {
       console.error(e)
