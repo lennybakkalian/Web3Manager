@@ -110,7 +110,7 @@ export class ContractComponent implements OnInit, OnDestroy {
         this.state.result = JSON.stringify(
           await tx.send({
             from: this.selectedWallet?.address,
-            gas: (await tx.estimateGas({from: this.selectedWallet?.address, value: Number(this.state.value)})) * 1.20,
+            gas: ((await tx.estimateGas({from: this.selectedWallet?.address, value: Number(this.state.value)})) * 1.20).toFixed(),
             value: Number(this.state.value)
           })
         )
