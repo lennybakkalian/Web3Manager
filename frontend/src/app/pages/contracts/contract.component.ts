@@ -110,7 +110,7 @@ export class ContractComponent implements OnInit, OnDestroy {
         this.state.result = JSON.stringify(
           await tx.send({
             from: this.selectedWallet?.address,
-            gas: await tx.estimateGas({from: this.selectedWallet?.address}),
+            gas: (await tx.estimateGas({from: this.selectedWallet?.address, value: Number(this.state.value)})) * 1.20,
             value: Number(this.state.value)
           })
         )
@@ -123,7 +123,7 @@ export class ContractComponent implements OnInit, OnDestroy {
 
   }
 
-  pow(x: number, y: number){
+  pow(x: number, y: number) {
     return Math.pow(x, y)
   }
 
