@@ -10,6 +10,7 @@ import {IWallet} from "../../dto/IWallet";
 import {selector_selectedWallet} from "../../store/wallet/wallet.selectors";
 import {ConfirmationService} from "primeng/api";
 import {web3} from "../../services/web3.service";
+import {bnbPrice} from "../../store/misc/misc.effects";
 
 @Component({
   selector: 'app-contract',
@@ -38,6 +39,9 @@ export class ContractComponent implements OnInit, OnDestroy {
   $subscriptions = new Subscription()
   $selectedWallet: Observable<IWallet | null>
   selectedWallet: IWallet | null
+
+
+  isNumericResponse = false
 
   constructor(private activatedRoute: ActivatedRoute,
               private contractService: ContractService,
@@ -97,20 +101,23 @@ export class ContractComponent implements OnInit, OnDestroy {
         }
       )
 
-
+      this.isNumericResponse = false
       if (method == 'call') {
-        this.state.result = JSON.stringify(
-          await contract.methods[this.state.selectedAbiItem!!.name!!].apply(null, input).call({
-            from: this.selectedWallet?.address,
-            value: Number(this.state.value)
-          })
-        )
+        const callRes = await contract.methods[this.state.selectedAbiItem!!.name!!].apply(null, input).call({
+          from: this.selectedWallet?.address,
+          value: Number(this.state.value)
+        })
+        this.state.result = isNaN(callRes) ? JSON.stringify(callRes) : parseInt(callRes)
+        this.isNumericResponse = !isNaN(callRes)
       } else {
         const tx = this.state.result = await contract.methods[this.state.selectedAbiItem!!.name!!].apply(null, input)
         this.state.result = JSON.stringify(
           await tx.send({
             from: this.selectedWallet?.address,
-            gas: ((await tx.estimateGas({from: this.selectedWallet?.address, value: Number(this.state.value)})) * 1.20).toFixed(),
+            gas: ((await tx.estimateGas({
+              from: this.selectedWallet?.address,
+              value: Number(this.state.value)
+            })) * 1.20).toFixed(),
             value: Number(this.state.value)
           })
         )
@@ -126,6 +133,8 @@ export class ContractComponent implements OnInit, OnDestroy {
   pow(x: number, y: number) {
     return Math.pow(x, y)
   }
+
+  getBnbPrice = () => bnbPrice
 
   ngOnDestroy() {
     this.$subscriptions.unsubscribe()

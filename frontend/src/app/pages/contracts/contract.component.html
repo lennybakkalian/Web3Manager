@@ -34,17 +34,37 @@
             <div style="display:flex;gap:5px">
               <div *ngIf="state.value" style="text-align:right;font-size:12px">
                 {{state.value / 10e17}} bnb =<br/>
-                {{state.value / pow(10, decimalCalculator)}} * <input placeholder="decimals" style="border:none;width:35px" [(ngModel)]="decimalCalculator" type="number"> =<br/>
+                {{state.value / pow(10, decimalCalculator)}} * <input placeholder="decimals"
+                                                                      style="border:none;width:35px"
+                                                                      [(ngModel)]="decimalCalculator" type="number">
+                =<br/>
                 {{state.value | number}} =
               </div>
-              <input pInputText placeholder="Value" style="padding:5px;width:300px" [(ngModel)]="state.value" type="number">
+              <input pInputText placeholder="Value" style="padding:5px;width:300px" [(ngModel)]="state.value"
+                     type="number">
               <p-button label="Send transaction" styleClass="p-button-danger" (onClick)="send($event)"
                         [loading]="state.loading"
                         [disabled]="($selectedWallet | async) == null"></p-button>
             </div>
           </div>
           <div *ngIf="state.result">
-            {{state.result}}
+            <div *ngIf="isNumericResponse">
+              <table>
+                <tr>
+                  <td>Response</td>
+                  <td><b>{{state.result}}</b></td>
+                </tr>
+                <tr>
+                  <td>BnB</td>
+                  <td>{{state.result / 10e17 | number}}</td>
+                </tr>
+                <tr>
+                  <td>Euro</td>
+                  <td>{{state.result / 10e17 * getBnbPrice() | number:'.2-2'}}€</td>
+                </tr>
+              </table>
+            </div>
+            <ng-container *ngIf="!isNumericResponse">{{state.result}}</ng-container>
           </div>
         </div>
       </ng-container>
