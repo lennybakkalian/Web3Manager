@@ -45,6 +45,9 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {ContractComponent} from './pages/contracts/contract.component';
 import { CreateContractComponent } from './pages/contracts/create-contract.component';
 import {InputTextareaModule} from "primeng/inputtextarea";
+import { WbnbManagerComponent } from './pages/home/wbnb-manager/wbnb-manager.component';
+import {SliderModule} from "primeng/slider";
+import { PrettyJsonPipe } from './misc/pretty-json.pipe';
 
 @NgModule({
   declarations: [
@@ -59,7 +62,9 @@ import {InputTextareaModule} from "primeng/inputtextarea";
     LoginComponent,
     SettingsComponent,
     ContractComponent,
-    CreateContractComponent
+    CreateContractComponent,
+    WbnbManagerComponent,
+    PrettyJsonPipe
   ],
   imports: [
     StoreModule.forRoot({
@@ -100,7 +105,8 @@ import {InputTextareaModule} from "primeng/inputtextarea";
     InputNumberModule,
     OverlayPanelModule,
     ConfirmDialogModule,
-    InputTextareaModule
+    InputTextareaModule,
+    SliderModule
   ],
   providers: [
     DialogService,

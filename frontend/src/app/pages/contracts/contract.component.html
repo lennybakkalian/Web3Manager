@@ -64,7 +64,9 @@
                 </tr>
               </table>
             </div>
-            <ng-container *ngIf="!isNumericResponse">{{state.result}}</ng-container>
+            <ng-container *ngIf="!isNumericResponse">
+              <pre [innerHTML]="state.result | prettyjson: [true, 3]"></pre>
+            </ng-container>
           </div>
         </div>
       </ng-container>

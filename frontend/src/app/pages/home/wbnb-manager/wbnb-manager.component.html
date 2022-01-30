@@ -1,0 +1,49 @@
+<p-card [header]="wBnbToBnb ? 'wBnB to BnB' : 'BnB to wBnB'">
+  <div *ngIf="!selectedWallet">
+    Select a wallet
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center; gap: 5px" *ngIf="selectedWallet">
+    <span *ngIf="from_balance==0" style="color:red">No {{wBnbToBnb ? 'wBnB' : 'BnB'}} balance</span>
+    <div class="p-inputgroup">
+      <input pInputText style="width:200px" class="p-inputtext-sm" [(ngModel)]="from_transferAmount"
+             [disabled]="from_balance==0">
+      <span class="p-inputgroup-addon" style="min-width:220px">{{wBnbToBnb ? 'wBnB' : 'BnB'}}
+        ({{from_transferAmount / 10e17 | number: '1.4-4'}}
+        , {{from_transferAmount / 10e17 * bnbPrice()|number:'1.2-2'}}€)</span>
+    </div>
+    <p-slider [(ngModel)]="from_transferAmount" [max]="from_balance" [ngStyle]="{width:'300px'}"
+              [disabled]="from_balance==0"></p-slider>
+    <div>
+      <i class="pi pi-arrow-down"></i>
+    </div>
+    <table style="width:100%">
+      <tr>
+        <td>New {{wBnbToBnb ? 'BnB' : 'wBnB'}} balance:</td>
+        <td>{{(to_balance + from_transferAmount) / 10e17 | number: '1.4-4'}}</td>
+        <td>{{(to_balance + from_transferAmount) / 10e17 * bnbPrice() | number: '1.2-2'}}€</td>
+      </tr>
+      <tr>
+        <td>New {{wBnbToBnb ? 'wBnB' : 'BnB'}} balance:</td>
+        <td>{{(from_balance - from_transferAmount) / 10e17 | number: '1.4-4'}}</td>
+        <td>{{(from_balance - from_transferAmount) / 10e17 * bnbPrice() | number: '1.2-2'}}€</td>
+      </tr>
+      <tr>
+        <td>Current wBnB balance:</td>
+        <td>{{wBnbBalance / 10e17 | number: '1.4-4'}}</td>
+        <td>{{wBnbBalance / 10e17 * bnbPrice() | number: '1.2-2'}}€</td>
+      </tr>
+      <tr>
+        <td>Current BnB balance:</td>
+        <td>{{bnbBalance / 10e17 | number: '1.4-4'}}</td>
+        <td>{{bnbBalance / 10e17 * bnbPrice() | number: '1.2-2'}}€</td>
+      </tr>
+    </table>
+    <div style="display:flex;justify-content:space-between;width:100%">
+      <button pButton (click)="swap()">Change direction</button>
+      <button pButton class="p-button-danger"
+              [disabled]="from_transferAmount == 0" [loading]="loading" (click)="execTransaction()">{{wBnbToBnb ? 'Withdraw' : 'Deposit'}}</button>
+    </div>
+    <b style="color:red">{{receiptError}}</b>
+    <pre *ngIf="receipt" [innerHTML]="receipt | prettyjson: [true, 3]" style="max-width:600px;overflow-x:auto"></pre>
+  </div>
+</p-card>
