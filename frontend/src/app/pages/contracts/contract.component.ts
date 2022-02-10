@@ -27,12 +27,16 @@ export class ContractComponent implements OnInit, OnDestroy {
       [index: string]: string
     },
     result: any,
-    loading: boolean
+    loading: boolean,
+    estimatedGas: number,
+    gasPrice: number
   } = {
     inputs: {},
     result: '',
     loading: false,
-    value: 0
+    value: 0,
+    estimatedGas: 0,
+    gasPrice: 5000000000
   }
   decimalCalculator = 8
 
@@ -55,7 +59,7 @@ export class ContractComponent implements OnInit, OnDestroy {
 
     this.activatedRoute.params.subscribe(params => {
       this.contract = null
-      this.state = {inputs: {}, result: '', loading: false, value: 0}
+      this.state = {inputs: {}, result: '', loading: false, value: 0, estimatedGas: 0, gasPrice: 5000000000}
       this.contractService.getContract(params['id']).subscribe(c => this.contract = c)
       console.log(params)
     })
@@ -102,22 +106,27 @@ export class ContractComponent implements OnInit, OnDestroy {
       )
 
       this.isNumericResponse = false
+      this.state.result = 'Loading...'
+
+
+      const tx = contract.methods[this.state.selectedAbiItem!!.name!!].apply(null, input)
+      this.state.estimatedGas = (await tx.estimateGas({
+        from: this.selectedWallet?.address,
+        value: Number(this.state.value)
+      }))
+
       if (method == 'call') {
-        const callRes = await contract.methods[this.state.selectedAbiItem!!.name!!].apply(null, input).call({
+        const callRes = await tx.call({
           from: this.selectedWallet?.address,
           value: Number(this.state.value)
         })
         this.state.result = isNaN(callRes) ? JSON.stringify(callRes) : parseInt(callRes)
         this.isNumericResponse = !isNaN(callRes)
       } else {
-        const tx = this.state.result = await contract.methods[this.state.selectedAbiItem!!.name!!].apply(null, input)
         this.state.result = JSON.stringify(
           await tx.send({
             from: this.selectedWallet?.address,
-            gas: ((await tx.estimateGas({
-              from: this.selectedWallet?.address,
-              value: Number(this.state.value)
-            })) * 1.20).toFixed(),
+            gas: (this.state.estimatedGas * 1.10).toFixed(),
             value: Number(this.state.value)
           })
         )

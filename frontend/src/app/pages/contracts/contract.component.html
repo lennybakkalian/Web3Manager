@@ -29,8 +29,12 @@
 
           </div>
           <div style="display:flex;gap:10px;margin-top:10px;justify-content:space-between">
-            <p-button label="Call" styleClass="p-button-help" (onClick)="call()"
-                      [disabled]="($selectedWallet | async) == null" [loading]="state.loading"></p-button>
+            <div style="display:flex;gap:10px">
+              <p-button label="Call" styleClass="p-button-help" (onClick)="call()"
+                        [disabled]="($selectedWallet | async) == null" [loading]="state.loading"></p-button>
+              Estimated Gas: {{((state.estimatedGas * state.gasPrice) / 10e17) * getBnbPrice() | number:'.2-2'}}€
+              <small style="color:grey">({{(state.estimatedGas * state.gasPrice) / 10e17 | number:'.8-8'}}, gasLimit: {{((state.estimatedGas * state.gasPrice * 1.10) / 10e17) * getBnbPrice() | number:'.2-2'}}€)</small>
+            </div>
             <div style="display:flex;gap:5px">
               <div *ngIf="state.value" style="text-align:right;font-size:12px">
                 {{state.value / 10e17}} bnb =<br/>
@@ -51,10 +55,6 @@
             <div *ngIf="isNumericResponse">
               <table>
                 <tr>
-                  <td>Response</td>
-                  <td><b>{{state.result}}</b></td>
-                </tr>
-                <tr>
                   <td>BnB</td>
                   <td>{{state.result / 10e17 | number}}</td>
                 </tr>
@@ -65,8 +65,9 @@
               </table>
             </div>
             <ng-container *ngIf="!isNumericResponse">
-              <pre [innerHTML]="state.result | prettyjson: [true, 3]"></pre>
+              <pre [innerHTML]="state.result | prettyjson: [true, 3]" style="max-width:1200px;overflow-x:auto"></pre>
             </ng-container>
+            <span style="color:grey;margin-top:30px;border-top:solid 1px #444444">{{state.result}}</span>
           </div>
         </div>
       </ng-container>
