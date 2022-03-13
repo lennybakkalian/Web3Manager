@@ -1,6 +1,6 @@
 <div *ngIf="contract" style="display:flex;flex-direction:column">
   <div style="display:flex;flex-direction:column;padding:20px 10px">
-    <b style="font-size:25px">{{contract.name}}</b>
+    <b style="font-size:25px">{{contract.name}} <i style="font-size:10px;cursor:Pointer" (click)="delete($event)">Delete</i></b>
     <small>{{contract.address}}</small>
   </div>
 
@@ -67,7 +67,7 @@
             <ng-container *ngIf="!isNumericResponse">
               <pre [innerHTML]="state.result | prettyjson: [true, 3]" style="max-width:1200px;overflow-x:auto"></pre>
             </ng-container>
-            <span style="color:grey;margin-top:30px;border-top:solid 1px #444444">{{state.result}}</span>
+            <div style="color:grey;margin-top:30px;border-top:solid 1px #444444;max-width:1200px;overflow-x:auto">{{state.result}}</div>
           </div>
         </div>
       </ng-container>

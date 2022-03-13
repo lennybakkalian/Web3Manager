@@ -11,6 +11,7 @@ import {selector_selectedWallet} from "../../store/wallet/wallet.selectors";
 import {ConfirmationService} from "primeng/api";
 import {web3} from "../../services/web3.service";
 import {bnbPrice} from "../../store/misc/misc.effects";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-contract',
@@ -50,7 +51,8 @@ export class ContractComponent implements OnInit, OnDestroy {
   constructor(private activatedRoute: ActivatedRoute,
               private contractService: ContractService,
               private walletStore: Store<WalletStore>,
-              private confirmationService: ConfirmationService) {
+              private confirmationService: ConfirmationService,
+              private http: HttpClient) {
   }
 
   ngOnInit() {
@@ -147,5 +149,18 @@ export class ContractComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.$subscriptions.unsubscribe()
+  }
+
+  delete($event: MouseEvent) {
+    this.confirmationService.confirm({
+      target: $event.target!!,
+      message: 'Do you really want to delete this contract?',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.http.delete(`/api/contract/${this.contract!!.id}`).subscribe(res => {
+          location.href = '/'
+        })
+      }
+    });
   }
 }

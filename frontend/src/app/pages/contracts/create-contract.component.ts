@@ -11,8 +11,8 @@ import {IContract} from "../../dto/IContract";
       <label>Address</label>
       <input pInputText placeholder="0x" [(ngModel)]="contract.address">
       <label>Abi</label>
-      <textarea pInputTextarea placeholder="[]" style="resize:vertical" [(ngModel)]="contract.abi"></textarea>
-      <p-button label="Save" (click)="save()"></p-button>
+      <textarea pInputTextarea placeholder="[]" style="resize:vertical" [(ngModel)]="contract.abi" #abiInp></textarea>
+      <p-button label="Save" (onClick)="save()" [disabled]="!abiInp.value"></p-button>
     </div>
   `,
   styles: [`
